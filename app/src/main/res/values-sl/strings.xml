@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ODIN</string>
+        <string name="odin_core_loop">OBSERVE → UNDERSTAND → DECIDE → ACT → VERIFY</string>
+    <string name="onboarding_brand_intro">ODIN — Open Device Intelligence Network</string>
+    <string name="onboarding_product_description">A privacy-first, on-device intelligence layer that observes device context, interprets intent, and acts through available capabilities.</string>
+    <string name="tab_chat">Klepet</string>
+    <string name="tab_dashboard">Nadzorna plošča</string>
+    <string name="tab_ambient">Ambient</string>
+    <string name="tab_settings">Nastavitve</string>
+    <string name="accessibility_service_description">Agentu pametnega zvočnika omogoča branje trenutno vidnega besedila na zaslonu in samodejno izvajanje dejanj uporabniškega vmesnika v vašem imenu.</string>
+    <string name="accessibility_service_summary">Omogočite, da lahko agent v napravi vidi zaslon in ga upravlja.</string>
+    <string name="a11y_service_description">ODIN uporablja to storitev za ljudi s posebnimi potrebami za branje vsebine zaslona in pritiskanje gumbov v vašem imenu, ko to zahtevate. Nobeni podatki ne zapustijo naprave. Storitev lahko kadar koli izklopite v Nastavitvah.</string>
+    <string name="voice_tile_label">Pogovor</string>
+    <string name="voice_tile_content_description">Zaženi glasovno sejo z aplikacijo ODIN</string>
+    <string name="locale_picker_title">Jezik</string>
+    <string name="locale_picker_system_default">Privzeto za sistem</string>
+    <string name="locale_picker_requires_android_13">Zahteva Android 13 ali novejši</string>
+    <string name="locale_picker_close">Zapri</string>
+    <string name="weather_location_picker_title">Default weather location</string>
+    <string name="weather_location_picker_search_hint">Search a city</string>
+    <string name="weather_location_picker_use_default">Use built-in default (Bengaluru)</string>
+    <string name="weather_location_picker_close">Close</string>
+    <string name="weather_location_picker_no_results">No matching cities</string>
+    <string name="weather_location_picker_current_label_default">Bengaluru (built-in default)</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_back">Back</string>
+    <string name="settings_voice_interaction">Voice Interaction</string>
+    <string name="settings_read_ai_responses">Read AI Responses Aloud</string>
+    <string name="settings_continuous_conversation">Continuous Conversation</string>
+    <string name="settings_continuous_conversation_hint">Auto-restart listening after response finishes</string>
+    <string name="settings_thinking_sound">Thinking Sound</string>
+    <string name="settings_thinking_sound_hint">Play a beep when processing starts</string>
+    <string name="settings_filler_phrases">Filler Phrases</string>
+    <string name="settings_filler_phrases_hint">Speak short phrases while the AI is thinking</string>
+    <string name="settings_resume_last_session">Resume Last Session</string>
+    <string name="settings_resume_last_session_hint">Restore previous conversation history on app start</string>
+    <string name="settings_wake_word_interrupts_tts">Wake Word Interrupts TTS</string>
+    <string name="settings_media_button_trigger">Media Button Trigger</string>
+    <string name="settings_media_button_trigger_hint">Use Bluetooth headset button to start voice input</string>
+    <string name="news_feed_picker_title">News feed</string>
+    <string name="news_feed_picker_custom_url">Apply custom URL</string>
+    <string name="news_feed_picker_custom_url_hint">RSS/Atom URL</string>
+    <string name="news_feed_picker_close">Close</string>
+    <string name="news_feed_section_header">News</string>
+    <string name="news_feed_category_nhk">NHK (日本語)</string>
+    <string name="news_feed_category_bbc">BBC (English)</string>
+    <string name="news_feed_category_other">Other</string>
+    <string name="news_feed_nhk_general">NHK General</string>
+    <string name="news_feed_nhk_society">NHK Society</string>
+    <string name="news_feed_nhk_science">NHK Science</string>
+    <string name="news_feed_nhk_politics">NHK Politics</string>
+    <string name="news_feed_nhk_economy">NHK Economy</string>
+    <string name="news_feed_nhk_world">NHK International</string>
+    <string name="news_feed_nhk_sports">NHK Sports</string>
+    <string name="news_feed_nhk_culture">NHK Culture</string>
+    <string name="news_feed_bbc_top">BBC Top Stories</string>
+    <string name="news_feed_bbc_world">BBC World</string>
+    <string name="news_feed_bbc_technology">BBC Technology</string>
+    <string name="news_feed_bbc_business">BBC Business</string>
+    <string name="news_feed_hackernews">Hacker News</string>
+    <string name="news_feed_custom">Custom URL</string>
+
+    <!-- Common buttons -->
+    <string name="common_back">Back</string>
+    <string name="common_delete">Delete</string>
+
+    <!-- Permissions screen -->
+    <string name="permissions_title">Permissions</string>
+    <string name="permissions_app_info">App info</string>
+    <string name="permissions_all_unlocked">All capabilities unlocked.</string>
+    <string name="permissions_status_granted">Granted</string>
+    <string name="permissions_status_denied">Denied</string>
+    <string name="permissions_unlocks_prefix">Unlocks: %1$s</string>
+    <string name="permissions_open_settings">Open settings</string>
+
+    <!-- Routines screen -->
+    <string name="routines_title">Routines</string>
+    <string name="routines_empty">No routines saved. Say \'remember this routine\u2026\' while talking to create one.</string>
+    <string name="routines_more">  \u2026 and %1$d more</string>
+
+    <string name="routines_count">%1$d routines</string>
+    <string name="routines_action_count">%1$d actions</string>
+    <string name="routines_schedule_label">Načrtovano: %1$s</string>
+    <string name="routines_schedule_once">enkrat</string>
+    <string name="permissions_locked_count">%1$d capabilities locked.</string>
+    <!-- Pairing card (multi-room) -->
+    <string name="pairing_phrase_title">Pairing phrase</string>
+    <string name="pairing_phrase_none">(no secret set)</string>
+    <string name="pairing_phrase_read_hint">Read this to the other speaker. Must match on every paired device.</string>
+
+    <!-- Voice health diagnostics -->
+    <string name="voice_health_title">Voice Health</string>
+    <string name="voice_health_running">Running diagnostics\u2026</string>
+    <string name="voice_health_refresh">Refresh Diagnostics</string>
+    <string name="voice_health_test_mic">Test Mic + STT Now</string>
+    <string name="voice_health_offline_profile_title">Offline voice profile</string>
+    <string name="voice_health_offline_component_stt">Local STT</string>
+    <string name="voice_health_offline_component_llm">Local LLM</string>
+    <string name="voice_health_offline_component_system_tts">System TTS</string>
+    <string name="voice_health_offline_component_neural_tts">Neural TTS</string>
+    <string name="voice_health_offline_stt_ready">Whisper native library and model ready</string>
+    <string name="voice_health_offline_stt_missing_native">Whisper native library not loaded</string>
+    <string name="voice_health_offline_stt_missing_model">No Whisper model downloaded</string>
+    <string name="voice_health_offline_stt_missing_both">Whisper native library not loaded and no model downloaded</string>
+    <string name="voice_health_offline_llm_ready">Embedded model present on device</string>
+    <string name="voice_health_offline_llm_missing">No embedded LLM model downloaded</string>
+    <string name="voice_health_offline_system_tts_ready">Android TTS engine installed (not guaranteed offline without language pack)</string>
+    <string name="voice_health_offline_system_tts_missing">No Android TTS engine installed</string>
+    <string name="voice_health_offline_neural_tts_ready">Piper native library and voice ready</string>
+    <string name="voice_health_offline_neural_tts_missing_native">Piper native library unavailable — not fully offline neural TTS</string>
+    <string name="voice_health_offline_neural_tts_missing_voice">No Piper voice downloaded</string>
+    <string name="voice_health_offline_neural_tts_missing_both">Piper native library unavailable and no voice downloaded — not fully offline neural TTS</string>
+    <string name="voice_health_offline_mode_fully_offline">Fully offline: local STT + local LLM + neural TTS. %1$s</string>
+    <string name="voice_health_offline_mode_system_tts">Local STT + local LLM with system TTS only (not fully offline neural TTS). %1$s</string>
+    <string name="voice_health_offline_mode_not_ready">Offline voice profile not ready. %1$s</string>
+    <string name="briefing_weather_loading">Loading weather…</string>
+    <string name="briefing_weather_error">Couldn\'t load weather</string>
+    <string name="briefing_headlines_title">Headlines</string>
+    <string name="briefing_headlines_loading">Fetching today\'s headlines…</string>
+    <string name="briefing_headlines_error">Couldn\'t load headlines</string>
+    <string name="briefing_error_network">Check your connection and try again.</string>
+    <string name="briefing_error_parse">The source returned an unexpected response.</string>
+    <string name="briefing_error_unknown">Something went wrong. Please try again.</string>
+    <string name="briefing_retry">Retry</string>
+
+    <!-- Common buttons -->
+    <string name="common_refresh">Refresh</string>
+
+    <!-- Providers screen -->
+    <string name="providers_title">Assistant providers</string>
+    <string name="providers_empty">No providers registered yet. Download an on-device model or configure a gateway in Settings.</string>
+    <string name="providers_active">Active</string>
+    <string name="providers_badge_on_device">On-device</string>
+    <string name="providers_badge_streaming">Streaming</string>
+    <string name="providers_badge_tools">Tools</string>
+    <string name="providers_badge_vision">Vision</string>
+
+    <!-- Multi-room card + mesh health -->
+    <string name="multiroom_title">Multi-room</string>
+    <string name="multiroom_broadcast">Broadcast: %1$s</string>
+    <string name="multiroom_status_on">On</string>
+    <string name="multiroom_status_off">Off</string>
+    <string name="multiroom_shared_secret">Shared secret: %1$s</string>
+    <string name="multiroom_secret_set">Set</string>
+    <string name="multiroom_secret_not_set">Not set</string>
+    <string name="multiroom_broadcasting_as">Broadcasting as: %1$s</string>
+    <string name="multiroom_peers_summary">Peers: %1$d (%2$d fresh, %3$d stale, %4$d gone)</string>
+    <string name="multiroom_hint_broadcast_off">Turn on Multi-room broadcast to join the mesh.</string>
+    <string name="multiroom_hint_no_secret">Set a shared secret</string>
+    <string name="multiroom_hint_no_peers">No peers yet \u2014 check that other tablets have Multi-room broadcast on.</string>
+    <string name="multiroom_hint_healthy">Mesh is healthy.</string>
+
+    <!-- System info screen -->
+    <string name="sysinfo_title">System info</string>
+    <string name="sysinfo_active_model">Active model</string>
+    <string name="sysinfo_model_none">(none)</string>
+    <string name="sysinfo_providers_count">Providers registered</string>
+    <string name="sysinfo_tools_count">Tools available</string>
+    <string name="sysinfo_devices_count">Smart-home devices</string>
+    <string name="sysinfo_skills_count">Skills</string>
+    <string name="sysinfo_routines_count">Routines</string>
+    <string name="sysinfo_documents_count">Documents (RAG)</string>
+    <string name="sysinfo_memory_count">Memory entries</string>
+    <string name="sysinfo_connectivity">Connectivity</string>
+    <string name="sysinfo_online">Online</string>
+    <string name="sysinfo_offline">Offline</string>
+    <string name="sysinfo_latency_violations">Latency budget violations</string>
+    <string name="sysinfo_latency_measurements">Latency measurements (lifetime)</string>
+    <string name="sysinfo_thermal_state">Thermal state</string>
+    <string name="sysinfo_broadcasting_as">Broadcasting as</string>
+    <string name="sysinfo_not_broadcasting">(not broadcasting)</string>
+    <string name="sysinfo_nearby_speakers">Nearby speakers (mDNS)</string>
+    <string name="sysinfo_multiroom_traffic">Multi-room traffic</string>
+    <string name="sysinfo_multiroom_rejections">Multi-room rejections</string>
+    <string name="sysinfo_traffic_summary">%1$d out · %2$d in</string>
+    <string name="sysinfo_clear_multiroom">Clear multi-room counters</string>
+    <string name="sysinfo_freshness_fresh">fresh</string>
+    <string name="sysinfo_freshness_stale">stale</string>
+    <string name="sysinfo_freshness_gone">gone</string>
+    <string name="sysinfo_rejection_malformed_json">malformed JSON \u2014 peer is sending invalid frames</string>
+    <string name="sysinfo_rejection_missing_field">missing required envelope field</string>
+    <string name="sysinfo_rejection_version_mismatch">protocol version mismatch \u2014 peers on different builds</string>
+    <string name="sysinfo_rejection_replay_window">outside replay window \u2014 check device clocks</string>
+    <string name="sysinfo_rejection_no_secret">shared secret not configured on this device</string>
+    <string name="sysinfo_rejection_hmac_mismatch">HMAC mismatch \u2014 check shared secret</string>
+    <string name="common_save">Save</string>
+
+    <!-- System prompt screen -->
+    <string name="system_prompt_title">Agent personality</string>
+    <string name="system_prompt_description">Customize the agent\'s system prompt. This is baked into every conversation and shapes tone and behavior.</string>
+    <string name="system_prompt_label_default">Default prompt (editable)</string>
+    <string name="system_prompt_label_custom">Custom prompt</string>
+    <string name="system_prompt_saved_message">Saved. Restart a conversation to pick up the change.</string>
+    <string name="system_prompt_reset">Reset to default</string>
+
+    <!-- Documents screen -->
+    <string name="documents_title">Documents</string>
+    <string name="documents_teach_title">Teach the agent a document</string>
+    <string name="documents_title_field">Title</string>
+    <string name="documents_content_field">Content (paste text, notes, article)</string>
+    <string name="documents_ingesting">Ingesting\u2026</string>
+    <string name="documents_ingest_button">Ingest</string>
+    <string name="documents_empty">No documents yet.</string>
+    <string name="documents_stored_count">%1$d documents stored</string>
+    <string name="documents_chunks_count">%1$d chunks</string>
+    <string name="documents_error_title_content_required">Title and content are required</string>
+    <string name="documents_added_message">Added \'%1$s\'</string>
+    <string name="documents_error_ingest_failed">Ingest failed: %1$s</string>
+    <string name="common_cancel">Cancel</string>
+
+    <!-- Skills screen -->
+    <string name="skills_title">Skills</string>
+    <string name="skills_reload">Reload</string>
+    <string name="skills_installed_count">%1$d skills installed</string>
+    <string name="skills_install_from_url">Install skill from URL</string>
+    <string name="skills_install_url_placeholder">https://\u2026/SKILL.md</string>
+    <string name="skills_installing">Installing\u2026</string>
+    <string name="skills_install_button">Install</string>
+    <string name="skills_source_prefix">Source: %1$s</string>
+    <string name="skills_remove">Remove</string>
+    <string name="skills_error_bundled_or_removed">Skill \'%1$s\' is bundled or already removed.</string>
+    <string name="skills_error_url_empty">URL is empty</string>
+    <string name="skills_error_install_failed">Install failed: %1$s</string>
+
+    <!-- Memory screen -->
+    <string name="memory_title">Long-term memory</string>
+    <string name="memory_clear_all">Clear all</string>
+    <string name="memory_clear_dialog_title">Clear all memory?</string>
+    <string name="memory_clear_dialog_body">This deletes every key-value pair the agent has learned. Cannot be undone.</string>
+    <string name="memory_clear_confirm">Clear</string>
+    <string name="memory_search_placeholder">Search keys or values</string>
+    <string name="memory_empty">No memories stored yet.</string>
+    <string name="memory_count">%1$d memories</string>
+    <string name="memory_forget">Forget</string>
+
+    <!-- SettingsScreen main body -->
+    <string name="settings_silence_timeout">Silence Timeout: %1$.1fs</string>
+    <string name="settings_min_utterance">Minimum Utterance: %1$d ms</string>
+    <string name="settings_min_utterance_hint">Ignore utterances shorter than this (filters chair squeaks and lip smacks). Raise if you hear false wakes firing the pipeline.</string>
+
+    <string name="settings_tts_provider">TTS Provider</string>
+    <string name="settings_tts_provider_android">Android System (on-device, free)</string>
+    <string name="settings_tts_provider_openai">OpenAI TTS (cloud, natural)</string>
+    <string name="settings_tts_provider_elevenlabs">ElevenLabs (cloud, high quality)</string>
+    <string name="settings_tts_provider_voicevox">VOICEVOX (self-hosted, Japanese)</string>
+    <string name="settings_tts_provider_piper">Piper neural (offline) \u2014 coming soon</string>
+
+    <string name="settings_tts_openai_api_key">OpenAI API Key</string>
+    <string name="settings_tts_openai_voice">Voice (alloy/echo/fable/onyx/nova/shimmer/coral)</string>
+    <string name="settings_tts_openai_model">Model (tts-1 / tts-1-hd / gpt-4o-mini-tts)</string>
+
+    <string name="settings_tts_elevenlabs_api_key">ElevenLabs API Key</string>
+    <string name="settings_tts_elevenlabs_voice_id">Voice ID</string>
+    <string name="settings_tts_elevenlabs_model">Model (eleven_multilingual_v2)</string>
+
+    <string name="settings_tts_voicevox_url">VOICEVOX Engine URL (e.g. http://192.168.1.10:50021)</string>
+    <string name="settings_tts_voicevox_speaker_id">Speaker/Style ID (3 = ずんだもん)</string>
+    <string name="settings_tts_voicevox_terms">I agree to VOICEVOX terms of use (credit the speaker per their license)</string>
+    <string name="settings_tts_voicevox_hint">Run the VOICEVOX ENGINE (Docker/PC) on your LAN. Speech won\'t work until terms are accepted.</string>
+
+    <string name="settings_android_tts_section">Android System TTS</string>
+    <string name="settings_speech_rate">Speech Rate: %1$.1fx</string>
+    <string name="settings_pitch">Pitch: %1$.1fx</string>
+    <string name="settings_tts_engine">TTS Engine: %1$s</string>
+    <string name="settings_tts_engine_default">System Default</string>
+
+    <string name="settings_weather_section">Weather</string>
+    <string name="settings_weather_hint">Used when you ask for the weather without naming a place (\"what\'s the weather?\" / \"天気教えて\"). Leave empty to fall back to Bengaluru.</string>
+    <string name="settings_news_hint">Controls the feed shown on the Home dashboard\'s headlines card and used as the default for voice news requests. Pick a bundled feed or paste your own RSS/Atom URL.</string>
+
+    <string name="settings_app_language_section">App Language</string>
+    <string name="settings_app_language_hint">Overrides the UI language for this app only. Android 13 or later required; the change takes effect immediately without a restart.</string>
+
+    <string name="settings_speech_recognition_section">Speech Recognition</string>
+    <string name="settings_stt_provider_android">Android System (online / GMS)</string>
+    <string name="settings_stt_provider_vosk">Vosk (offline) \u2014 coming soon</string>
+    <string name="settings_stt_provider_whisper">Whisper (offline) \u2014 coming soon</string>
+    <string name="settings_stt_provider_hint">Offline backends are placeholder stubs today. Selecting one surfaces a spoken \"coming soon\" error \u2014 fall back to Android until the JNI wiring lands.</string>
+    <string name="settings_stt_language">STT Language (e.g. ja-JP, en-US)</string>
+    <string name="settings_tts_language">TTS Language (e.g. ja-JP, en-US)</string>
+    <string name="settings_language_default_hint">Leave empty to use device default language</string>
+
+    <string name="settings_wake_word_section">Wake Word</string>
+    <string name="settings_enable_wake_word">Enable Wake Word</string>
+    <string name="settings_enable_wake_word_hint">Off = wake word detection disabled, mic only activates from mic button</string>
+    <string name="settings_wake_word_phrase">Wake Word Phrase</string>
+    <string name="settings_wake_word_phrase_hint">The phrase the app listens for. Restart the app after changing.</string>
+    <string name="settings_sensitivity">Sensitivity: %1$.2f</string>
+    <string name="settings_sensitivity_hint">Higher = more likely to trigger (can cause false wakes). Lower = more conservative. Default 0.60.</string>
+    <string name="settings_battery_saver">Battery Saver</string>
+    <string name="settings_battery_saver_hint">Pause wake-word detection when battery \u2264 20 %% and the device is unplugged.</string>
+    <string name="settings_multiroom_broadcast">Multi-room broadcast</string>
+    <string name="settings_multiroom_broadcast_hint">Advertise this device on the LAN via mDNS and accept announcement envelopes from peers on port 8421. Requires a shared secret below.</string>
+    <string name="settings_multiroom_secret">Multi-room shared secret</string>
+    <string name="settings_multiroom_secret_hint">Identical secret on every speaker. HMAC-SHA256 signs each envelope; mismatches are silently dropped. Minimum 16 chars recommended. QR-pair setup coming in a later release.</string>
+    <string name="settings_speaker_groups_button">Speaker groups\u2026</string>
+    <string name="settings_speaker_groups_button_hint">Name subsets of your discovered speakers (e.g. \'kitchen\') so you can broadcast to only that room. Groups live on this device only \u2014 receivers aren\'t aware of them.</string>
+
+    <string name="settings_home_assistant_section">Home Assistant</string>
+    <string name="settings_ha_base_url">Base URL</string>
+    <string name="settings_ha_token">Long-Lived Access Token</string>
+    <string name="settings_openclaw_section">OpenClaw</string>
+    <string name="settings_openclaw_url">Gateway URL</string>
+    <string name="settings_local_llm_section">Local LLM (OpenAI Compatible)</string>
+    <string name="settings_local_llm_url">Endpoint URL</string>
+    <string name="settings_local_llm_model">Model Name</string>
+    <string name="settings_providers_button">Upravljanje ponudnikov…</string>
+    <string name="settings_providers_button_hint">Izberite med načinom lokalnega LLM in API, dodajte ponudnike oblačnega API-ja (OpenAI, Anthropic in druge) ter izberite, kateri registrirani ponudnik je aktiven.</string>
+    <string name="settings_switchbot_section">SwitchBot</string>
+    <string name="settings_switchbot_token">Token</string>
+    <string name="settings_switchbot_secret">Secret Key</string>
+    <string name="settings_mqtt_section">MQTT (Shelly / Tasmota)</string>
+    <string name="settings_mqtt_broker_url">Broker URL</string>
+
+    <string name="settings_about_litert">On-Device LLM: The app uses LiteRT-LM for GPU-accelerated inference with Gemma 4 E2B.</string>
+    <string name="settings_about_default_assistant">To set as default assistant: Settings &gt; Apps &gt; Default Apps &gt; Digital Assistant &gt; ODIN</string>
+    <string name="settings_about_section">About</string>
+    <string name="settings_about_tagline">ODIN — Open Device Intelligence Network</string>
+    <string name="settings_about_github">Docs &amp; source on GitHub</string>
+    <!-- Common buttons (additional) -->
+    <string name="common_done">Done</string>
+
+    <!-- Analytics / usage screen -->
+    <string name="analytics_title">Usage</string>
+    <string name="analytics_reset_button">Reset</string>
+    <string name="analytics_reset_dialog_title">Reset usage stats?</string>
+    <string name="analytics_reset_dialog_body">Clears all tool usage history. This is local data only.</string>
+    <string name="analytics_reset_confirm">Reset</string>
+    <string name="analytics_fast_path_rate">%1$d%% fast-path</string>
+    <string name="analytics_fast_path_description">Canonical commands handled without the LLM \u2014 higher = snappier UX.</string>
+    <string name="analytics_voice_latency_title">Voice pipeline latency</string>
+    <string name="analytics_no_tools_used">No tools used yet.</string>
+    <string name="analytics_all_time_usage">All-time usage (%1$d tools)</string>
+    <string name="analytics_clear_tool_usage">Clear tool usage stats</string>
+    <string name="analytics_latency_over">%1$d over</string>
+    <string name="analytics_latency_within">within budget</string>
+    <string name="analytics_latency_stats">avg %1$dms • p95 %2$dms</string>
+    <string name="analytics_latency_stats_with_budget">avg %1$dms • p95 %2$dms • budget %3$dms</string>
+    <string name="analytics_tool_calls">%1$d tool calls</string>
+    <string name="analytics_summary_stats">%1$d%% success • %2$d unique tools</string>
+    <string name="analytics_success_rate">%1$d%% success</string>
+
+    <!-- Speaker groups screen -->
+    <string name="speaker_groups_title">Speaker groups</string>
+    <string name="speaker_groups_new">New group</string>
+    <string name="speaker_groups_empty">No speaker groups yet. Tap \'New group\' to create one and add any of the %1$d discovered speaker(s).</string>
+    <string name="speaker_groups_count">%1$d group(s) • %2$d speaker(s) discovered</string>
+    <string name="speaker_groups_members">%1$d member(s) • %2$d reachable now</string>
+    <string name="speaker_groups_more">  \u2026 and %1$d more</string>
+    <string name="speaker_groups_edit">Edit members</string>
+    <string name="speaker_groups_new_dialog_title">New speaker group</string>
+    <string name="speaker_groups_name_label">Name (e.g. kitchen)</string>
+    <string name="speaker_groups_create">Create</string>
+    <string name="speaker_groups_members_dialog_title">Members of %1$s</string>
+    <string name="speaker_groups_no_speakers">No speakers discovered on the LAN yet. Enable Multi-room broadcast in Settings and make sure peers are on the same network.</string>
+    <string name="speaker_groups_reachable_now">reachable now</string>
+    <string name="speaker_groups_not_seen">not seen</string>
+    <string name="speaker_groups_error_name_blank">Group name can\'t be blank</string>
+    <string name="speaker_groups_error_duplicate">Group \'%1$s\' already exists</string>
+    <string name="settings_search_section">Web Search</string>
+    <string name="settings_brave_search_api_key">Brave Search API key</string>
+    <string name="settings_brave_search_api_key_hint">Optional. Get a free key at brave.com/search/api. When set, web_search uses Brave for higher-quality results (especially for Japanese and time-sensitive queries) and falls back to DuckDuckGo otherwise.</string>
+
+    <!-- P19.2 Termux Bridge (advanced opt-in) -->
+    <string name="settings_advanced_section">Advanced</string>
+    <string name="settings_termux_bridge_title">Termux shell access</string>
+    <string name="settings_termux_bridge_description">Let the assistant run shell commands through your Termux app. Advanced power-user feature — install Termux and grant the RUN_COMMAND permission first.</string>
+    <string name="settings_termux_bridge_warning">Warning: the assistant can execute arbitrary shell commands on this device (including rm, curl, etc.). Enable only if you understand the risks.</string>
+    <string name="settings_termux_bridge_status_installed">Termux installed</string>
+    <string name="settings_termux_bridge_status_not_installed">Termux not installed</string>
+    <string name="settings_termux_bridge_status_permission_granted">RUN_COMMAND permission granted</string>
+    <string name="settings_termux_bridge_status_permission_missing">RUN_COMMAND permission missing</string>
+    <string name="settings_termux_bridge_gate_reminder">The termux_shell_exec tool stays hidden from the assistant until all items above show a check mark.</string>
+
+    <!-- P14.8 Battery / thermal saver indicator chip (Ambient + Home) -->
+    <string name="saver_chip_battery">Battery saver active — wake word paused</string>
+    <string name="saver_chip_thermal">Thermal saver active — wake word paused</string>
+    <string name="saver_chip_icon_description">Saver active</string>
+
+    <string name="settings_termux_allowlist_label">Command allowlist (optional)</string>
+    <string name="settings_termux_allowlist_placeholder">/data/data/com.termux/files/usr/bin/git, ...</string>
+    <string name="settings_termux_allowlist_hint">Comma-separated absolute binary paths. When set, the assistant can only run commands on this list. Leave empty for no restriction.</string>
+
+    <!-- P14.1 Whisper offline STT model management -->
+    <string name="settings_whisper_models_title">Whisper models</string>
+    <string name="settings_whisper_models_hint">Download a Whisper model to transcribe speech fully on-device. Smaller models are faster but less accurate.</string>
+    <string name="settings_whisper_model_size">%1$d MB</string>
+    <string name="settings_whisper_model_progress">%1$d / %2$d MB</string>
+    <string name="settings_whisper_model_download">Download</string>
+    <string name="settings_whisper_model_delete">Delete</string>
+    <string name="settings_whisper_model_downloading">Downloading…</string>
+
+    <!-- P14.9 Piper offline TTS voice management -->
+    <string name="settings_silero_vad_title">Neural voice detection (Silero VAD)</string>
+    <string name="settings_silero_vad_hint">Download a small on-device model to detect speech more accurately than simple volume level. Falls back automatically until it\'s downloaded.</string>
+    <string name="settings_silero_vad_size">%1$d MB</string>
+    <string name="settings_silero_vad_progress">%1$d / %2$d MB</string>
+    <string name="settings_silero_vad_download">Download</string>
+    <string name="settings_silero_vad_delete">Delete</string>
+    <string name="settings_silero_vad_downloading">Downloading…</string>
+    <string name="settings_silero_vad_ready">Ready — in use</string>
+    <string name="settings_silero_vad_error">Download failed: %1$s</string>
+    <string name="settings_embedding_gemma_title">Smarter memory search (EmbeddingGemma)</string>
+    <string name="settings_embedding_gemma_hint">Download a model to search saved memories by meaning instead of matching words. Falls back automatically until it\'s downloaded.</string>
+    <string name="settings_embedding_gemma_size">%1$d MB</string>
+    <string name="settings_embedding_gemma_progress">%1$d / %2$d MB</string>
+    <string name="settings_embedding_gemma_download">Download</string>
+    <string name="settings_embedding_gemma_delete">Delete</string>
+    <string name="settings_embedding_gemma_downloading">Downloading…</string>
+    <string name="settings_embedding_gemma_ready">Ready — in use</string>
+    <string name="settings_embedding_gemma_error">Download failed: %1$s</string>
+    <string name="settings_model_switch_title">Active model</string>
+    <string name="settings_model_switch_hint">Switch which downloaded model answers you, without restarting the app.</string>
+    <string name="settings_model_switch_active">Active</string>
+    <string name="settings_model_switch_action">Switch</string>
+    <string name="settings_model_switch_switching">Switching…</string>
+    <string name="settings_model_switch_error">Couldn\'t load that model — kept the previous one active.</string>
+    <string name="settings_wake_word_engine_title">Wake word engine</string>
+    <string name="settings_wake_word_engine_hint">openWakeWord uses less power than the default engine, but only understands English and the fixed phrase "hey jarvis" -- it ignores your custom wake word above.</string>
+    <string name="settings_wake_word_engine_vosk">Default</string>
+    <string name="settings_wake_word_engine_open_wake_word">openWakeWord</string>
+    <string name="settings_wake_word_engine_download">Download</string>
+    <string name="settings_wake_word_engine_downloading">Downloading…</string>
+    <string name="settings_wake_word_engine_open_wake_word_warning">Listening for "hey jarvis" in English only. Switch back to Default above to use your custom wake word again.</string>
+    <string name="settings_wake_word_engine_error">Download failed: %1$s</string>
+    <string name="settings_piper_voices_title">Piper voices</string>
+    <string name="settings_piper_voices_hint">Download a Piper neural voice to synthesize speech fully on-device. Each voice is about 60 MB.</string>
+    <string name="settings_piper_voice_size">%1$s • %2$d MB</string>
+    <string name="settings_piper_voice_progress">%1$d / %2$d MB • %3$s</string>
+    <string name="settings_piper_voice_download">Download</string>
+    <string name="settings_piper_voice_delete">Delete</string>
+    <string name="settings_piper_voice_downloading">Downloading…</string>
+    <string name="settings_piper_voice_preview">Preview</string>
+
+    <!-- P14.1 Whisper transcription language -->
+    <string name="settings_whisper_language_title">Transcription language</string>
+    <string name="settings_whisper_language_hint">Auto-detect is slower and occasionally picks the wrong language. Force a specific one when you know the household speaks mostly English or Japanese.</string>
+
+    <string name="settings_whisper_translate_title">Translate to English</string>
+    <string name="settings_whisper_translate_hint">Convert non-English speech to English at transcription time. Useful when the downstream agent only understands English.</string>
+
+    <!-- Offline stack diagnostic card -->
+    <string name="settings_offline_stack_title">Offline stack status</string>
+    <string name="settings_offline_stack_hint">At-a-glance view of whether the on-device STT and TTS are ready to use. Both require the native libraries to be built AND a model/voice to be downloaded.</string>
+    <string name="settings_offline_stack_stt_heading">Speech-to-text (Whisper)</string>
+    <string name="settings_offline_stack_tts_heading">Text-to-speech (Piper)</string>
+    <string name="settings_offline_stack_ready">Ready</string>
+    <string name="settings_offline_stack_missing">Not ready</string>
+    <string name="settings_offline_stack_lib">Native library loaded</string>
+    <string name="settings_offline_stack_model">Active model downloaded</string>
+    <string name="settings_offline_stack_voice">Active voice downloaded</string>
+
+    <!-- Provider mode (first-run + settings) -->
+    <string name="provider_mode_title">Izberite, kako naj razmišlja ODIN</string>
+    <string name="provider_mode_subtitle">To lahko pozneje spremenite v Nastavitvah.</string>
+    <string name="provider_mode_local_title">Lokalni LLM</string>
+    <string name="provider_mode_local_description">Deluje v celoti na tej napravi. Deluje brez povezave, vendar je manj zmogljiv kot oblačni modeli.</string>
+    <string name="provider_mode_api_title">Ponudnik API</string>
+    <string name="provider_mode_api_description">Povežite se z OpenAI, Anthropic ali drugim oblačnim ponudnikom z uporabo lastnega ključa API. Zahteva internet.</string>
+    <string name="add_provider_title">Dodaj ponudnika</string>
+    <string name="add_provider_select_preset">Izberite ponudnika</string>
+    <string name="add_provider_display_name_label">Prikazano ime</string>
+    <string name="add_provider_base_url_label">Osnovni URL</string>
+    <string name="add_provider_api_key_label">Ključ API</string>
+    <string name="add_provider_fetch_models">Pridobi modele</string>
+    <string name="add_provider_model_fetch_failed">ID modela (ročni vnos)</string>
+    <string name="add_provider_save">Shrani</string>
+    <string name="add_provider_cancel">Prekliči</string>
+    <string name="providers_mode_card_title">Način pomočnika</string>
+    <string name="providers_mode_local">Lokalni LLM</string>
+    <string name="providers_mode_api">API</string>
+    <string name="providers_add_provider">Dodaj ponudnika</string>
+    <string name="providers_mode_restart_hint">Spremembe začnejo veljati po ponovnem zagonu aplikacije.</string>
+    <string name="reminder_notification_title">Opomnik</string>
+    <string name="alarm_notification_title">Alarm</string>
+    <string name="spotify_connect_success">Povezano s storitvijo Spotify.</string>
+    <string name="spotify_connect_failed">Povezava s storitvijo Spotify ni uspela. Poskusite znova.</string>
+    <string name="spotify_settings_title">Spotify</string>
+    <string name="spotify_client_id_label">ID odjemalca</string>
+    <string name="spotify_client_id_hint">Iz lastne aplikacije na developer.spotify.com/dashboard.</string>
+    <string name="spotify_redirect_uri_label">URI za preusmeritev</string>
+    <string name="spotify_redirect_uri_hint">Pred povezavo dodajte natanko ta URI kot URI za preusmeritev v svoji aplikaciji Spotify.</string>
+    <string name="spotify_connect_button">Poveži se s storitvijo Spotify</string>
+    <string name="spotify_disconnect_button">Prekini povezavo</string>
+    <string name="spotify_status_connected">Povezano</string>
+    <string name="spotify_status_not_connected">Ni povezano</string>
+    <string name="settings_spotify_button">Upravljanje Spotify…</string>
+    <string name="settings_spotify_button_hint">Povežite svoj Spotify račun za iskanje in glasovno upravljanje predvajanja.</string>
+    <string name="chat_demo_title">Try a live demo prompt</string>
+    <string name="chat_demo_description">Answers are generated by the model stored on this device.</string>
+    <string name="chat_demo_prompt_math">What is 2 + 2? Answer in one short sentence.</string>
+    <string name="chat_demo_prompt_privacy">Explain how an on-device AI assistant can protect privacy.</string>
+    <string name="chat_demo_prompt_bengaluru">Suggest a simple smart-home routine for a home in Bengaluru.</string>
+    <string name="chat_demo_chip_math">Quick test: 2 + 2</string>
+    <string name="chat_demo_chip_privacy">Privacy and local AI</string>
+    <string name="chat_demo_chip_bengaluru">A Bengaluru smart-home idea</string>
+    <string name="chat_input_placeholder">Message the on-device assistant…</string>
+    <string name="voice_listening">Listening…</string>
+    <string name="voice_processing">Processing…</string>
+    <string name="voice_thinking">Thinking…</string>
+    <string name="voice_preparing_speech">Preparing speech…</string>
+    <string name="chat_demo_chip_scan">Scan a note with offline OCR</string>
+    <string name="chat_scan_button">Scan text from camera</string>
+    <string name="chat_scan_prompt">Read this text captured from my camera and explain it: %1$s</string>
+    <string name="chat_scan_no_text">No text found. Move closer and hold the camera steady, then try again.</string>
+    <string name="chat_scan_camera_not_ready">Camera is not ready. Return to the app and try again.</string>
+    <string name="chat_scan_failed">Could not scan text from that image.</string>
+</resources>
+
+
+

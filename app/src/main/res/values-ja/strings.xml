@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ODIN</string>
+        <string name="odin_core_loop">OBSERVE → UNDERSTAND → DECIDE → ACT → VERIFY</string>
+    <string name="onboarding_brand_intro">ODIN — Open Device Intelligence Network</string>
+    <string name="onboarding_product_description">A privacy-first, on-device intelligence layer that observes device context, interprets intent, and acts through available capabilities.</string>
+    <string name="tab_chat">チャット</string>
+    <string name="tab_dashboard">ダッシュボード</string>
+    <string name="tab_ambient">アンビエント</string>
+    <string name="tab_settings">設定</string>
+    <string name="accessibility_service_description">スマートスピーカーエージェントが現在表示されている画面のテキストを読み取り、UI操作を代行できるようにします。</string>
+    <string name="accessibility_service_summary">オンデバイスエージェントが画面を認識・操作できるようにします。</string>
+    <string name="a11y_service_description">ODINは、このアクセシビリティサービスを使用して、画面に表示されている内容を読み取り、指示に応じてボタンをタップします。端末外へデータを送信することはありません。設定からいつでも無効にできます。</string>
+    <string name="voice_tile_label">話す</string>
+    <string name="voice_tile_content_description">ODINで音声セッションを開始</string>    <string name="locale_picker_title">言語</string>
+    <string name="locale_picker_system_default">システムデフォルト</string>
+    <string name="locale_picker_requires_android_13">Android 13 以降が必要</string>
+    <string name="locale_picker_close">閉じる</string>
+    <string name="weather_location_picker_title">既定の天気の場所</string>
+    <string name="weather_location_picker_search_hint">都市を検索</string>
+    <string name="weather_location_picker_use_default">組み込みの既定 (Bengaluru) を使用</string>
+    <string name="weather_location_picker_close">閉じる</string>
+    <string name="weather_location_picker_no_results">一致する都市がありません</string>
+    <string name="weather_location_picker_current_label_default">Bengaluru (組み込みの既定)</string>
+
+    <string name="settings_title">設定</string>
+    <string name="settings_back">戻る</string>
+    <string name="settings_voice_interaction">音声操作</string>
+    <string name="settings_read_ai_responses">AIの応答を読み上げる</string>
+    <string name="settings_continuous_conversation">連続会話</string>
+    <string name="settings_continuous_conversation_hint">応答後に自動的にリスニングを再開します</string>
+    <string name="settings_thinking_sound">考え中の効果音</string>
+    <string name="settings_thinking_sound_hint">処理開始時にビープ音を鳴らします</string>
+    <string name="settings_filler_phrases">つなぎのフレーズ</string>
+    <string name="settings_filler_phrases_hint">AIが考えている間に「少々お待ちください」などを発話します</string>
+    <string name="settings_resume_last_session">前回のセッションを再開</string>
+    <string name="settings_resume_last_session_hint">アプリ起動時に前回の会話履歴を復元します</string>
+    <string name="settings_wake_word_interrupts_tts">ウェイクワードでTTSを割り込み</string>
+    <string name="settings_media_button_trigger">メディアボタンでトリガー</string>
+    <string name="settings_media_button_trigger_hint">Bluetoothヘッドセットのボタンで音声入力を開始します</string>
+    <string name="news_feed_picker_title">ニュースフィード</string>
+    <string name="news_feed_picker_custom_url">カスタム URL を適用</string>
+    <string name="news_feed_picker_custom_url_hint">RSS/Atom URL</string>
+    <string name="news_feed_picker_close">閉じる</string>
+    <string name="news_feed_section_header">ニュース</string>
+    <string name="news_feed_category_nhk">NHK（日本語）</string>
+    <string name="news_feed_category_bbc">BBC（英語）</string>
+    <string name="news_feed_category_other">その他</string>
+    <string name="news_feed_nhk_general">NHK 総合</string>
+    <string name="news_feed_nhk_society">NHK 社会</string>
+    <string name="news_feed_nhk_science">NHK 科学</string>
+    <string name="news_feed_nhk_politics">NHK 政治</string>
+    <string name="news_feed_nhk_economy">NHK 経済</string>
+    <string name="news_feed_nhk_world">NHK 国際</string>
+    <string name="news_feed_nhk_sports">NHK スポーツ</string>
+    <string name="news_feed_nhk_culture">NHK 文化</string>
+    <string name="news_feed_bbc_top">BBC トップストーリー</string>
+    <string name="news_feed_bbc_world">BBC ワールド</string>
+    <string name="news_feed_bbc_technology">BBC テクノロジー</string>
+    <string name="news_feed_bbc_business">BBC ビジネス</string>
+    <string name="news_feed_hackernews">Hacker News</string>
+    <string name="news_feed_custom">カスタム URL</string>
+
+    <!-- Common buttons -->
+    <string name="common_back">戻る</string>
+    <string name="common_delete">削除</string>
+
+    <!-- Permissions screen -->
+    <string name="permissions_title">権限</string>
+    <string name="permissions_app_info">アプリ情報</string>
+    <string name="permissions_all_unlocked">すべての機能が利用可能です。</string>
+    <string name="permissions_status_granted">許可済み</string>
+    <string name="permissions_status_denied">拒否</string>
+    <string name="permissions_unlocks_prefix">解放される機能: %1$s</string>
+    <string name="permissions_open_settings">設定を開く</string>
+
+    <!-- Routines screen -->
+    <string name="routines_title">ルーティン</string>
+    <string name="routines_empty">保存されたルーティンはありません。音声で「このルーティンを覚えて\u2026」と話しかけて作成できます。</string>
+    <string name="routines_more">  \u2026 ほか %1$d 件</string>
+
+    <string name="routines_count">%1$d 件のルーティン</string>
+    <string name="routines_action_count">%1$d 件のアクション</string>
+    <string name="routines_schedule_label">スケジュール: %1$s</string>
+    <string name="routines_schedule_once">1回のみ</string>
+    <string name="permissions_locked_count">%1$d 件の機能がロックされています。</string>
+    <!-- Pairing card (multi-room) -->
+    <string name="pairing_phrase_title">ペアリングフレーズ</string>
+    <string name="pairing_phrase_none">（シークレット未設定）</string>
+    <string name="pairing_phrase_read_hint">他のスピーカーに向けて読み上げてください。ペアリング済みの全端末で一致している必要があります。</string>
+
+    <!-- Voice health diagnostics -->
+    <string name="voice_health_title">音声ヘルス</string>
+    <string name="voice_health_running">診断を実行中\u2026</string>
+    <string name="voice_health_refresh">診断を更新</string>
+    <string name="voice_health_test_mic">マイク + STT を今すぐテスト</string>
+    <string name="voice_health_offline_profile_title">オフライン音声プロファイル</string>
+    <string name="voice_health_offline_component_stt">ローカル STT</string>
+    <string name="voice_health_offline_component_llm">ローカル LLM</string>
+    <string name="voice_health_offline_component_system_tts">システム TTS</string>
+    <string name="voice_health_offline_component_neural_tts">ニューラル TTS</string>
+    <string name="voice_health_offline_stt_ready">Whisper ネイティブライブラリとモデルの準備完了</string>
+    <string name="voice_health_offline_stt_missing_native">Whisper ネイティブライブラリが未読み込み</string>
+    <string name="voice_health_offline_stt_missing_model">Whisper モデルが未ダウンロード</string>
+    <string name="voice_health_offline_stt_missing_both">Whisper ネイティブライブラリ未読み込み、モデルも未ダウンロード</string>
+    <string name="voice_health_offline_llm_ready">端末上に組み込みモデルあり</string>
+    <string name="voice_health_offline_llm_missing">組み込み LLM モデルが未ダウンロード</string>
+    <string name="voice_health_offline_system_tts_ready">Android TTS エンジンあり（言語パック未導入だとオフライン保証なし）</string>
+    <string name="voice_health_offline_system_tts_missing">Android TTS エンジンが未インストール</string>
+    <string name="voice_health_offline_neural_tts_ready">Piper ネイティブライブラリとボイスの準備完了</string>
+    <string name="voice_health_offline_neural_tts_missing_native">Piper ネイティブライブラリ不可 — 完全オフラインのニューラル TTS ではありません</string>
+    <string name="voice_health_offline_neural_tts_missing_voice">Piper ボイスが未ダウンロード</string>
+    <string name="voice_health_offline_neural_tts_missing_both">Piper ネイティブライブラリ不可・ボイス未ダウンロード — 完全オフラインのニューラル TTS ではありません</string>
+    <string name="voice_health_offline_mode_fully_offline">完全オフライン: ローカル STT + ローカル LLM + ニューラル TTS。%1$s</string>
+    <string name="voice_health_offline_mode_system_tts">ローカル STT + ローカル LLM（システム TTS のみ — 完全オフラインのニューラル TTS ではありません）。%1$s</string>
+    <string name="voice_health_offline_mode_not_ready">オフライン音声プロファイル未準備。%1$s</string>
+    <string name="briefing_weather_loading">天気を読み込み中…</string>
+    <string name="briefing_weather_error">天気を取得できませんでした</string>
+    <string name="briefing_headlines_title">ニュース</string>
+    <string name="briefing_headlines_loading">今日のニュースを取得中…</string>
+    <string name="briefing_headlines_error">ニュースを取得できませんでした</string>
+    <string name="briefing_error_network">接続を確認して、もう一度お試しください。</string>
+    <string name="briefing_error_parse">ソースから予期しない応答が返されました。</string>
+    <string name="briefing_error_unknown">問題が発生しました。もう一度お試しください。</string>
+    <string name="briefing_retry">再試行</string>
+
+    <!-- Common buttons -->
+    <string name="common_refresh">更新</string>
+
+    <!-- Providers screen -->
+    <string name="providers_title">アシスタントプロバイダー</string>
+    <string name="providers_empty">まだプロバイダーは登録されていません。オンデバイスモデルをダウンロードするか、設定でゲートウェイを構成してください。</string>
+    <string name="providers_active">有効</string>
+    <string name="providers_badge_on_device">オンデバイス</string>
+    <string name="providers_badge_streaming">ストリーミング</string>
+    <string name="providers_badge_tools">ツール</string>
+    <string name="providers_badge_vision">ビジョン</string>
+
+    <!-- Multi-room card + mesh health -->
+    <string name="multiroom_title">マルチルーム</string>
+    <string name="multiroom_broadcast">ブロードキャスト: %1$s</string>
+    <string name="multiroom_status_on">オン</string>
+    <string name="multiroom_status_off">オフ</string>
+    <string name="multiroom_shared_secret">共有シークレット: %1$s</string>
+    <string name="multiroom_secret_set">設定済み</string>
+    <string name="multiroom_secret_not_set">未設定</string>
+    <string name="multiroom_broadcasting_as">ブロードキャスト名: %1$s</string>
+    <string name="multiroom_peers_summary">ピア: %1$d（%2$d 新鮮、%3$d 古い、%4$d 消失）</string>
+    <string name="multiroom_hint_broadcast_off">メッシュに参加するにはマルチルームブロードキャストをオンにしてください。</string>
+    <string name="multiroom_hint_no_secret">共有シークレットを設定してください</string>
+    <string name="multiroom_hint_no_peers">ピアがまだ見つかりません — 他のタブレットのマルチルームブロードキャストがオンか確認してください。</string>
+    <string name="multiroom_hint_healthy">メッシュは正常です。</string>
+
+    <!-- System info screen -->
+    <string name="sysinfo_title">システム情報</string>
+    <string name="sysinfo_active_model">有効なモデル</string>
+    <string name="sysinfo_model_none">（なし）</string>
+    <string name="sysinfo_providers_count">登録済みプロバイダー</string>
+    <string name="sysinfo_tools_count">利用可能なツール</string>
+    <string name="sysinfo_devices_count">スマートホームデバイス</string>
+    <string name="sysinfo_skills_count">スキル</string>
+    <string name="sysinfo_routines_count">ルーティン</string>
+    <string name="sysinfo_documents_count">ドキュメント (RAG)</string>
+    <string name="sysinfo_memory_count">メモリエントリ</string>
+    <string name="sysinfo_connectivity">接続状態</string>
+    <string name="sysinfo_online">オンライン</string>
+    <string name="sysinfo_offline">オフライン</string>
+    <string name="sysinfo_latency_violations">レイテンシ予算超過</string>
+    <string name="sysinfo_latency_measurements">レイテンシ測定回数（累計）</string>
+    <string name="sysinfo_thermal_state">サーマル状態</string>
+    <string name="sysinfo_broadcasting_as">ブロードキャスト名</string>
+    <string name="sysinfo_not_broadcasting">（ブロードキャストしていません）</string>
+    <string name="sysinfo_nearby_speakers">近くのスピーカー (mDNS)</string>
+    <string name="sysinfo_multiroom_traffic">マルチルームトラフィック</string>
+    <string name="sysinfo_multiroom_rejections">マルチルーム拒否</string>
+    <string name="sysinfo_traffic_summary">送信 %1$d · 受信 %2$d</string>
+    <string name="sysinfo_clear_multiroom">マルチルームカウンタをクリア</string>
+    <string name="sysinfo_freshness_fresh">新鮮</string>
+    <string name="sysinfo_freshness_stale">古い</string>
+    <string name="sysinfo_freshness_gone">消失</string>
+    <string name="sysinfo_rejection_malformed_json">不正な JSON — ピアが無効なフレームを送信しています</string>
+    <string name="sysinfo_rejection_missing_field">エンベロープの必須フィールドが欠落</string>
+    <string name="sysinfo_rejection_version_mismatch">プロトコルバージョン不一致 — ピアのビルドが異なります</string>
+    <string name="sysinfo_rejection_replay_window">リプレイウィンドウ外 — デバイスの時刻を確認してください</string>
+    <string name="sysinfo_rejection_no_secret">このデバイスに共有シークレットが設定されていません</string>
+    <string name="sysinfo_rejection_hmac_mismatch">HMAC 不一致 — 共有シークレットを確認してください</string>
+    <string name="common_save">保存</string>
+
+    <!-- System prompt screen -->
+    <string name="system_prompt_title">エージェントのパーソナリティ</string>
+    <string name="system_prompt_description">エージェントのシステムプロンプトをカスタマイズします。すべての会話に組み込まれ、トーンと動作を決定します。</string>
+    <string name="system_prompt_label_default">デフォルトのプロンプト (編集可能)</string>
+    <string name="system_prompt_label_custom">カスタムプロンプト</string>
+    <string name="system_prompt_saved_message">保存しました。変更を反映するには会話を開始し直してください。</string>
+    <string name="system_prompt_reset">デフォルトに戻す</string>
+
+    <!-- Documents screen -->
+    <string name="documents_title">ドキュメント</string>
+    <string name="documents_teach_title">エージェントにドキュメントを教える</string>
+    <string name="documents_title_field">タイトル</string>
+    <string name="documents_content_field">本文（テキスト、メモ、記事を貼り付け）</string>
+    <string name="documents_ingesting">取り込み中\u2026</string>
+    <string name="documents_ingest_button">取り込み</string>
+    <string name="documents_empty">ドキュメントはまだありません。</string>
+    <string name="documents_stored_count">%1$d 件のドキュメントを保存済み</string>
+    <string name="documents_chunks_count">%1$d チャンク</string>
+    <string name="documents_error_title_content_required">タイトルと本文が必要です</string>
+    <string name="documents_added_message">「%1$s」を追加しました</string>
+    <string name="documents_error_ingest_failed">取り込みに失敗しました: %1$s</string>
+    <string name="common_cancel">キャンセル</string>
+
+    <!-- Skills screen -->
+    <string name="skills_title">スキル</string>
+    <string name="skills_reload">再読み込み</string>
+    <string name="skills_installed_count">%1$d 件のスキルをインストール済み</string>
+    <string name="skills_install_from_url">URL からスキルをインストール</string>
+    <string name="skills_install_url_placeholder">https://\u2026/SKILL.md</string>
+    <string name="skills_installing">インストール中\u2026</string>
+    <string name="skills_install_button">インストール</string>
+    <string name="skills_source_prefix">ソース: %1$s</string>
+    <string name="skills_remove">削除</string>
+    <string name="skills_error_bundled_or_removed">スキル「%1$s」は同梱品または既に削除済みです。</string>
+    <string name="skills_error_url_empty">URL が空です</string>
+    <string name="skills_error_install_failed">インストールに失敗しました: %1$s</string>
+
+    <!-- Memory screen -->
+    <string name="memory_title">長期メモリ</string>
+    <string name="memory_clear_all">すべて消去</string>
+    <string name="memory_clear_dialog_title">すべてのメモリを消去しますか？</string>
+    <string name="memory_clear_dialog_body">エージェントが学習したすべてのキーと値のペアを削除します。この操作は取り消せません。</string>
+    <string name="memory_clear_confirm">消去</string>
+    <string name="memory_search_placeholder">キーまたは値で検索</string>
+    <string name="memory_empty">まだメモリは保存されていません。</string>
+    <string name="memory_count">%1$d 件のメモリ</string>
+    <string name="memory_forget">忘れる</string>
+
+    <!-- SettingsScreen main body -->
+    <string name="settings_silence_timeout">無音タイムアウト: %1$.1f秒</string>
+    <string name="settings_min_utterance">最小発話長: %1$d ms</string>
+    <string name="settings_min_utterance_hint">これより短い発話を無視します（椅子のきしみや唇の音を除去）。誤起動が目立つ場合は値を上げてください。</string>
+
+    <string name="settings_tts_provider">TTS プロバイダー</string>
+    <string name="settings_tts_provider_android">Android システム（オンデバイス、無料）</string>
+    <string name="settings_tts_provider_openai">OpenAI TTS（クラウド、自然）</string>
+    <string name="settings_tts_provider_elevenlabs">ElevenLabs（クラウド、高品質）</string>
+    <string name="settings_tts_provider_voicevox">VOICEVOX（セルフホスト、日本語）</string>
+    <string name="settings_tts_provider_piper">Piper ニューラル（オフライン）— 近日対応</string>
+
+    <string name="settings_tts_openai_api_key">OpenAI API キー</string>
+    <string name="settings_tts_openai_voice">ボイス（alloy/echo/fable/onyx/nova/shimmer/coral）</string>
+    <string name="settings_tts_openai_model">モデル（tts-1 / tts-1-hd / gpt-4o-mini-tts）</string>
+
+    <string name="settings_tts_elevenlabs_api_key">ElevenLabs API キー</string>
+    <string name="settings_tts_elevenlabs_voice_id">Voice ID</string>
+    <string name="settings_tts_elevenlabs_model">モデル（eleven_multilingual_v2）</string>
+
+    <string name="settings_tts_voicevox_url">VOICEVOX エンジン URL（例: http://192.168.1.10:50021）</string>
+    <string name="settings_tts_voicevox_speaker_id">スピーカー/スタイル ID（3 = ずんだもん）</string>
+    <string name="settings_tts_voicevox_terms">VOICEVOX の利用規約に同意します（ライセンスに従ってスピーカーのクレジットを表記）</string>
+    <string name="settings_tts_voicevox_hint">LAN 上で VOICEVOX ENGINE (Docker/PC) を起動してください。規約に同意するまで音声は再生されません。</string>
+
+    <string name="settings_android_tts_section">Android システム TTS</string>
+    <string name="settings_speech_rate">読み上げ速度: %1$.1f倍</string>
+    <string name="settings_pitch">ピッチ: %1$.1f倍</string>
+    <string name="settings_tts_engine">TTS エンジン: %1$s</string>
+    <string name="settings_tts_engine_default">システムデフォルト</string>
+
+    <string name="settings_weather_section">天気</string>
+    <string name="settings_weather_hint">場所を指定せずに天気を尋ねた場合に使われます（「天気教えて」など）。空欄の場合はBengaluruにフォールバックします。</string>
+    <string name="settings_news_hint">ホームダッシュボードのニュースカードと、音声ニュース要求のデフォルトに使用されるフィードを設定します。バンドル済みフィードまたは独自の RSS/Atom URL を指定できます。</string>
+
+    <string name="settings_app_language_section">アプリの言語</string>
+    <string name="settings_app_language_hint">このアプリのみ UI 言語を上書きします。Android 13 以降が必要で、再起動せずに即座に切り替わります。</string>
+
+    <string name="settings_speech_recognition_section">音声認識</string>
+    <string name="settings_stt_provider_android">Android システム（オンライン / GMS）</string>
+    <string name="settings_stt_provider_vosk">Vosk（オフライン）— 近日対応</string>
+    <string name="settings_stt_provider_whisper">Whisper（オフライン）— 近日対応</string>
+    <string name="settings_stt_provider_hint">オフラインバックエンドは現状プレースホルダーです。選択すると「近日対応」エラーが話されます — JNI 実装が届くまで Android にフォールバックしてください。</string>
+    <string name="settings_stt_language">STT 言語（例: ja-JP, en-US）</string>
+    <string name="settings_tts_language">TTS 言語（例: ja-JP, en-US）</string>
+    <string name="settings_language_default_hint">空欄で端末のデフォルト言語を使用します</string>
+
+    <string name="settings_wake_word_section">ウェイクワード</string>
+    <string name="settings_enable_wake_word">ウェイクワードを有効化</string>
+    <string name="settings_enable_wake_word_hint">オフ = ウェイクワード検出を無効化。マイクはマイクボタンからのみ起動します</string>
+    <string name="settings_wake_word_phrase">ウェイクワード</string>
+    <string name="settings_wake_word_phrase_hint">アプリが待ち受ける語句です。変更後はアプリを再起動してください。</string>
+    <string name="settings_sensitivity">感度: %1$.2f</string>
+    <string name="settings_sensitivity_hint">高い = トリガーされやすい（誤起動の可能性あり）。低い = より保守的。既定値 0.60。</string>
+    <string name="settings_battery_saver">バッテリーセーバー</string>
+    <string name="settings_battery_saver_hint">バッテリー残量 20 %% 以下かつ非充電時にウェイクワード検出を一時停止します。</string>
+    <string name="settings_multiroom_broadcast">マルチルームブロードキャスト</string>
+    <string name="settings_multiroom_broadcast_hint">mDNS で LAN にこの端末をアドバタイズし、ポート 8421 でピアからのアナウンスを受信します。以下の共有シークレットが必要です。</string>
+    <string name="settings_multiroom_secret">マルチルーム共有シークレット</string>
+    <string name="settings_multiroom_secret_hint">全スピーカーで同一のシークレットを設定してください。HMAC-SHA256 で各エンベロープに署名し、不一致は無言で破棄されます。最低 16 文字推奨。QR ペアリング設定は今後のリリースで対応予定。</string>
+    <string name="settings_speaker_groups_button">スピーカーグループ\u2026</string>
+    <string name="settings_speaker_groups_button_hint">発見されたスピーカーの一部に名前を付けて（例:「キッチン」）、その部屋だけにブロードキャストできます。グループはこの端末内のみに保存され、受信側は関知しません。</string>
+
+    <string name="settings_home_assistant_section">Home Assistant</string>
+    <string name="settings_ha_base_url">ベース URL</string>
+    <string name="settings_ha_token">長期アクセストークン</string>
+    <string name="settings_openclaw_section">OpenClaw</string>
+    <string name="settings_openclaw_url">ゲートウェイ URL</string>
+    <string name="settings_local_llm_section">ローカル LLM (OpenAI 互換)</string>
+    <string name="settings_local_llm_url">エンドポイント URL</string>
+    <string name="settings_local_llm_model">モデル名</string>
+    <string name="settings_providers_button">プロバイダーを管理…</string>
+    <string name="settings_providers_button_hint">ローカルLLMとAPIモードを切り替え、クラウドAPIプロバイダー（OpenAI、Anthropicなど）を追加し、どの登録済みプロバイダーを有効にするか選択します。</string>
+    <string name="settings_switchbot_section">SwitchBot</string>
+    <string name="settings_switchbot_token">トークン</string>
+    <string name="settings_switchbot_secret">シークレットキー</string>
+    <string name="settings_mqtt_section">MQTT (Shelly / Tasmota)</string>
+    <string name="settings_mqtt_broker_url">ブローカー URL</string>
+
+    <string name="settings_about_litert">オンデバイス LLM: Gemma 4 E2B の GPU 推論に LiteRT-LM を使用しています。</string>
+    <string name="settings_about_default_assistant">既定のアシスタントに設定するには: 設定 &gt; アプリ &gt; 既定のアプリ &gt; デジタルアシスタント &gt; ODIN</string>
+    <string name="settings_about_section">アプリについて</string>
+    <string name="settings_about_tagline">ODIN — Open Device Intelligence Network</string>
+    <string name="settings_about_github">GitHub のドキュメントとソースコード</string>
+    <!-- Common buttons (additional) -->
+    <string name="common_done">完了</string>
+
+    <!-- Analytics / usage screen -->
+    <string name="analytics_title">使用状況</string>
+    <string name="analytics_reset_button">リセット</string>
+    <string name="analytics_reset_dialog_title">使用状況の統計をリセットしますか？</string>
+    <string name="analytics_reset_dialog_body">すべてのツール使用履歴を消去します。ローカルデータのみが対象です。</string>
+    <string name="analytics_reset_confirm">リセット</string>
+    <string name="analytics_fast_path_rate">ファストパス %1$d%%</string>
+    <string name="analytics_fast_path_description">LLM を介さずに処理できた定型コマンド — 値が高いほど応答が速くなります。</string>
+    <string name="analytics_voice_latency_title">音声パイプラインのレイテンシ</string>
+    <string name="analytics_no_tools_used">まだツールは使用されていません。</string>
+    <string name="analytics_all_time_usage">累計の使用状況（%1$d ツール）</string>
+    <string name="analytics_clear_tool_usage">ツール使用状況の統計を消去</string>
+    <string name="analytics_latency_over">%1$d 件超過</string>
+    <string name="analytics_latency_within">予算内</string>
+    <string name="analytics_latency_stats">平均 %1$dms • p95 %2$dms</string>
+    <string name="analytics_latency_stats_with_budget">平均 %1$dms • p95 %2$dms • 予算 %3$dms</string>
+    <string name="analytics_tool_calls">%1$d 回のツール呼び出し</string>
+    <string name="analytics_summary_stats">成功率 %1$d%% • %2$d 種類のツール</string>
+    <string name="analytics_success_rate">成功率 %1$d%%</string>
+
+    <!-- Speaker groups screen -->
+    <string name="speaker_groups_title">スピーカーグループ</string>
+    <string name="speaker_groups_new">新しいグループ</string>
+    <string name="speaker_groups_empty">スピーカーグループはまだありません。「新しいグループ」をタップして作成し、発見された %1$d 台のスピーカーを追加してください。</string>
+    <string name="speaker_groups_count">%1$d グループ • %2$d 台のスピーカーを発見</string>
+    <string name="speaker_groups_members">%1$d メンバー • %2$d 台が現在到達可能</string>
+    <string name="speaker_groups_more">  \u2026 他 %1$d 件</string>
+    <string name="speaker_groups_edit">メンバーを編集</string>
+    <string name="speaker_groups_new_dialog_title">新しいスピーカーグループ</string>
+    <string name="speaker_groups_name_label">名前（例: キッチン）</string>
+    <string name="speaker_groups_create">作成</string>
+    <string name="speaker_groups_members_dialog_title">「%1$s」のメンバー</string>
+    <string name="speaker_groups_no_speakers">LAN 上にスピーカーがまだ発見されていません。設定でマルチルームブロードキャストを有効にし、ピアが同じネットワークにあることを確認してください。</string>
+    <string name="speaker_groups_reachable_now">現在到達可能</string>
+    <string name="speaker_groups_not_seen">未検出</string>
+    <string name="speaker_groups_error_name_blank">グループ名を空にはできません</string>
+    <string name="speaker_groups_error_duplicate">「%1$s」グループは既に存在します</string>
+    <string name="settings_search_section">Web検索</string>
+    <string name="settings_brave_search_api_key">Brave Search APIキー</string>
+    <string name="settings_brave_search_api_key_hint">任意。brave.com/search/api で無料キーを取得できます。設定するとweb検索がBrave（日本語や時事ネタで高品質）を使い、未設定時はDuckDuckGoにフォールバックします。</string>
+
+    <!-- P19.2 Termux Bridge (上級者向けオプトイン) -->
+    <string name="settings_advanced_section">詳細設定</string>
+    <string name="settings_termux_bridge_title">Termuxシェル連携</string>
+    <string name="settings_termux_bridge_description">Termuxアプリ経由でアシスタントにシェルコマンドを実行させます。上級者向け機能 — 先にTermuxをインストールしてRUN_COMMAND権限を付与してください。</string>
+    <string name="settings_termux_bridge_warning">警告: アシスタントがこの端末で任意のシェルコマンド（rm、curl等）を実行可能になります。リスクを理解した上で有効化してください。</string>
+    <string name="settings_termux_bridge_status_installed">Termuxがインストール済み</string>
+    <string name="settings_termux_bridge_status_not_installed">Termux未インストール</string>
+    <string name="settings_termux_bridge_status_permission_granted">RUN_COMMAND権限が付与済み</string>
+    <string name="settings_termux_bridge_status_permission_missing">RUN_COMMAND権限が未付与</string>
+    <string name="settings_termux_bridge_gate_reminder">上記すべてにチェックが付くまで、termux_shell_exec はアシスタントに公開されません。</string>
+    <string name="settings_termux_allowlist_label">コマンド許可リスト (任意)</string>
+    <string name="settings_termux_allowlist_placeholder">/data/data/com.termux/files/usr/bin/git, ...</string>
+    <string name="settings_termux_allowlist_hint">カンマ区切りの絶対パス。設定時はリスト上のコマンドのみ実行可能。空欄で制限なし。</string>
+
+    <!-- P14.8 バッテリー / 熱セーバー表示チップ (Ambient + Home) -->
+    <string name="saver_chip_battery">バッテリーセーバー有効 — ウェイクワード停止中</string>
+    <string name="saver_chip_thermal">サーマルセーバー有効 — ウェイクワード停止中</string>
+    <string name="saver_chip_icon_description">セーバー有効</string>
+
+    <!-- P14.1 Whisperオフラインモデル管理 -->
+    <string name="settings_whisper_models_title">Whisperモデル</string>
+    <string name="settings_whisper_models_hint">端末内で音声認識するためのWhisperモデルをダウンロードできます。小さいモデルほど高速ですが精度は落ちます。</string>
+    <string name="settings_whisper_model_size">%1$d MB</string>
+    <string name="settings_whisper_model_progress">%1$d / %2$d MB</string>
+    <string name="settings_whisper_model_download">ダウンロード</string>
+    <string name="settings_whisper_model_delete">削除</string>
+    <string name="settings_whisper_model_downloading">ダウンロード中…</string>
+
+    <!-- P14.9 Piperオフライン音声合成 -->
+    <string name="settings_silero_vad_title">ニューラル音声検出（Silero VAD）</string>
+    <string name="settings_silero_vad_hint">音量だけに頼るより高精度に発話を検出する小型モデルをダウンロードします。ダウンロードするまでは自動的に簡易方式にフォールバックします。</string>
+    <string name="settings_silero_vad_size">%1$d MB</string>
+    <string name="settings_silero_vad_progress">%1$d / %2$d MB</string>
+    <string name="settings_silero_vad_download">ダウンロード</string>
+    <string name="settings_silero_vad_delete">削除</string>
+    <string name="settings_silero_vad_downloading">ダウンロード中…</string>
+    <string name="settings_silero_vad_ready">準備完了 — 使用中</string>
+    <string name="settings_silero_vad_error">ダウンロードに失敗しました: %1$s</string>
+    <string name="settings_embedding_gemma_title">賢いメモリー検索（EmbeddingGemma）</string>
+    <string name="settings_embedding_gemma_hint">単語の一致ではなく意味でメモリーを検索できるモデルをダウンロードします。ダウンロードするまでは自動的に簡易方式にフォールバックします。</string>
+    <string name="settings_embedding_gemma_size">%1$d MB</string>
+    <string name="settings_embedding_gemma_progress">%1$d / %2$d MB</string>
+    <string name="settings_embedding_gemma_download">ダウンロード</string>
+    <string name="settings_embedding_gemma_delete">削除</string>
+    <string name="settings_embedding_gemma_downloading">ダウンロード中…</string>
+    <string name="settings_embedding_gemma_ready">準備完了 — 使用中</string>
+    <string name="settings_embedding_gemma_error">ダウンロードに失敗しました: %1$s</string>
+    <string name="settings_model_switch_title">使用中のモデル</string>
+    <string name="settings_model_switch_hint">アプリを再起動せずに、応答に使うダウンロード済みモデルを切り替えます。</string>
+    <string name="settings_model_switch_active">使用中</string>
+    <string name="settings_model_switch_action">切り替え</string>
+    <string name="settings_model_switch_switching">切り替え中…</string>
+    <string name="settings_model_switch_error">モデルを読み込めませんでした — 前のモデルのまま使用中です。</string>
+    <string name="settings_wake_word_engine_title">ウェイクワードエンジン</string>
+    <string name="settings_wake_word_engine_hint">openWakeWordは標準エンジンより消費電力が少ないですが、英語の固定フレーズ「hey jarvis」のみに対応しており、上記のカスタムウェイクワードは使用されません。</string>
+    <string name="settings_wake_word_engine_vosk">標準</string>
+    <string name="settings_wake_word_engine_open_wake_word">openWakeWord</string>
+    <string name="settings_wake_word_engine_download">ダウンロード</string>
+    <string name="settings_wake_word_engine_downloading">ダウンロード中…</string>
+    <string name="settings_wake_word_engine_open_wake_word_warning">英語の「hey jarvis」のみを検知しています。カスタムウェイクワードに戻すには上の「標準」を選択してください。</string>
+    <string name="settings_wake_word_engine_error">ダウンロードに失敗しました: %1$s</string>
+    <string name="settings_piper_voices_title">Piperボイス</string>
+    <string name="settings_piper_voices_hint">端末内で音声合成するためのPiperニューラル音声をダウンロードできます。1音声あたり約60MBです。</string>
+    <string name="settings_piper_voice_size">%1$s • %2$d MB</string>
+    <string name="settings_piper_voice_progress">%1$d / %2$d MB • %3$s</string>
+    <string name="settings_piper_voice_download">ダウンロード</string>
+    <string name="settings_piper_voice_delete">削除</string>
+    <string name="settings_piper_voice_downloading">ダウンロード中…</string>
+    <string name="settings_piper_voice_preview">試聴</string>
+
+    <!-- P14.1 Whisper音声認識言語 -->
+    <string name="settings_whisper_language_title">認識言語</string>
+    <string name="settings_whisper_language_hint">自動検出は少し遅く、まれに誤検出します。日本語もしくは英語のみ話す環境なら明示指定を推奨。</string>
+    <string name="settings_whisper_translate_title">英語に翻訳する</string>
+    <string name="settings_whisper_translate_hint">英語以外の発話を認識と同時に英語化します。下流のエージェントが英語のみ対応の場合に有用です。</string>
+
+    <!-- オフラインスタック状態 -->
+    <string name="settings_offline_stack_title">オフライン機能の状態</string>
+    <string name="settings_offline_stack_hint">オンデバイスSTT/TTSが利用可能か一目で確認できます。どちらもネイティブライブラリがビルド済みで、かつモデル/音声のダウンロードが完了している必要があります。</string>
+    <string name="settings_offline_stack_stt_heading">音声認識 (Whisper)</string>
+    <string name="settings_offline_stack_tts_heading">音声合成 (Piper)</string>
+    <string name="settings_offline_stack_ready">利用可能</string>
+    <string name="settings_offline_stack_missing">未準備</string>
+    <string name="settings_offline_stack_lib">ネイティブライブラリ読み込み済み</string>
+    <string name="settings_offline_stack_model">使用モデルをダウンロード済み</string>
+    <string name="settings_offline_stack_voice">使用ボイスをダウンロード済み</string>
+
+    <!-- Provider mode (first-run + settings) -->
+    <string name="provider_mode_title">ODINの動作方法を選択</string>
+    <string name="provider_mode_subtitle">この設定は後で設定画面から変更できます。</string>
+    <string name="provider_mode_local_title">ローカルLLM</string>
+    <string name="provider_mode_local_description">この端末上で完結します。オフラインで動作しますが、クラウドモデルより性能は劣ります。</string>
+    <string name="provider_mode_api_title">APIプロバイダー</string>
+    <string name="provider_mode_api_description">自分のAPIキーでOpenAI、Anthropicなどのクラウドプロバイダーに接続します。インターネット接続が必要です。</string>
+    <string name="add_provider_title">プロバイダーを追加</string>
+    <string name="add_provider_select_preset">プロバイダーを選択</string>
+    <string name="add_provider_display_name_label">表示名</string>
+    <string name="add_provider_base_url_label">ベースURL</string>
+    <string name="add_provider_api_key_label">APIキー</string>
+    <string name="add_provider_fetch_models">モデル一覧を取得</string>
+    <string name="add_provider_model_fetch_failed">モデルIDを直接入力</string>
+    <string name="add_provider_save">保存</string>
+    <string name="add_provider_cancel">キャンセル</string>
+    <string name="providers_mode_card_title">アシスタントモード</string>
+    <string name="providers_mode_local">ローカルLLM</string>
+    <string name="providers_mode_api">API</string>
+    <string name="providers_add_provider">プロバイダーを追加</string>
+    <string name="providers_mode_restart_hint">変更はアプリを再起動すると反映されます。</string>
+    <string name="reminder_notification_title">リマインダー</string>
+    <string name="alarm_notification_title">アラーム</string>
+    <string name="spotify_connect_success">Spotifyに接続しました。</string>
+    <string name="spotify_connect_failed">Spotifyへの接続に失敗しました。もう一度お試しください。</string>
+    <string name="spotify_settings_title">Spotify</string>
+    <string name="spotify_client_id_label">クライアントID</string>
+    <string name="spotify_client_id_hint">developer.spotify.com/dashboard の自分のアプリから取得。</string>
+    <string name="spotify_redirect_uri_label">リダイレクトURI</string>
+    <string name="spotify_redirect_uri_hint">接続する前に、この通りのURIをSpotifyアプリのリダイレクトURIとして追加してください。</string>
+    <string name="spotify_connect_button">Spotifyに接続</string>
+    <string name="spotify_disconnect_button">接続解除</string>
+    <string name="spotify_status_connected">接続済み</string>
+    <string name="spotify_status_not_connected">未接続</string>
+    <string name="settings_spotify_button">Spotifyを管理…</string>
+    <string name="settings_spotify_button_hint">自分のSpotifyアカウントを接続して、音声で検索・再生操作できるようにします。</string>
+    <string name="chat_demo_title">Try a live demo prompt</string>
+    <string name="chat_demo_description">Answers are generated by the model stored on this device.</string>
+    <string name="chat_demo_prompt_math">What is 2 + 2? Answer in one short sentence.</string>
+    <string name="chat_demo_prompt_privacy">Explain how an on-device AI assistant can protect privacy.</string>
+    <string name="chat_demo_prompt_bengaluru">Suggest a simple smart-home routine for a home in Bengaluru.</string>
+    <string name="chat_demo_chip_math">Quick test: 2 + 2</string>
+    <string name="chat_demo_chip_privacy">Privacy and local AI</string>
+    <string name="chat_demo_chip_bengaluru">A Bengaluru smart-home idea</string>
+    <string name="chat_input_placeholder">Message the on-device assistant…</string>
+    <string name="voice_listening">Listening…</string>
+    <string name="voice_processing">Processing…</string>
+    <string name="voice_thinking">Thinking…</string>
+    <string name="voice_preparing_speech">Preparing speech…</string>
+    <string name="chat_demo_chip_scan">Scan a note with offline OCR</string>
+    <string name="chat_scan_button">Scan text from camera</string>
+    <string name="chat_scan_prompt">Read this text captured from my camera and explain it: %1$s</string>
+    <string name="chat_scan_no_text">No text found. Move closer and hold the camera steady, then try again.</string>
+    <string name="chat_scan_camera_not_ready">Camera is not ready. Return to the app and try again.</string>
+    <string name="chat_scan_failed">Could not scan text from that image.</string>
+</resources>
+
+
+

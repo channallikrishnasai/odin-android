@@ -1,0 +1,53 @@
+# ODIN Docs
+
+ODIN is a privacy-first Android device intelligence layer with local inference and device-control capabilities.
+
+## Start here
+
+- **[State of the project](state-of-the-project.md)** — what works today, what's scaffolding, what's missing
+- **[Smart-speaker audit](smart-speaker-audit.md)** — evidence-backed product verdict, release gates, and prioritized gaps
+- **[Architecture](architecture.md)** — layer map, key abstractions
+- **[Conventions](conventions.md)** — Kotlin style, package layout, testing
+- **[Testing conventions](testing-conventions.md)** — runTest, MockK landmines, virtual-time pitfalls
+- **[Roadmap](roadmap.md)** — priority-ordered backlog
+
+## Reference
+
+- **[Home dashboard](home-dashboard.md)** — Alexa-style landing layout, tile taxonomy, refresh cadences
+- **[Tools](tools.md)** — every LLM-callable tool and its parameters
+- **[Fast paths](fast-paths.md)** — voice utterances handled without the LLM
+- **[Random tools](random-tools.md)** — `flip_coin` / `roll_dice` / `pick_random` reference + example utterances
+- **[Providers](providers.md)** — AssistantProvider implementations
+- **[Skills](skills.md)** — authoring `SKILL.md` files
+- **[Permissions](permissions.md)** — runtime + special permissions
+- **[Privacy & data flow](privacy.md)** — what stays on device, what can leave, how to disable each channel
+- **[Tablet control cookbook](tablet-control-cookbook.md)** — Phase 15 recipes (open apps, tap buttons, reply to notifications) without root
+- **[Termux Bridge (advanced)](termux-bridge.md)** — opt-in shell access through a locally-installed Termux app, with 3 gates + command allowlist
+- **[Multi-room quickstart](multi-room-quickstart.md)** — how to pair two tablets and broadcast
+- **[Multi-room protocol](multi-room-protocol.md)** — WebSocket message bus design
+- **[Multi-room FAQ](multi-room-faq.md)** — answers to common questions about pairing, privacy, and scope
+- **[Real-device smoke test](real-device-smoke-test.md)** — on-device validation run before each release
+- **[Offline stack smoke test](offline-stack-smoke-test.md)** — current Whisper/Silero/Piper readiness and offline validation checklist
+- **[E2E testing](e2e-testing.md)** — unit, instrumented, CI, and real-device test boundaries
+- **[Latency budgets](latency-budgets.md)** — per-span timing targets for the voice pipeline
+
+## Running locally
+
+```bash
+./gradlew testDebugUnitTest   # JVM unit tests (all supported debug variants use ./gradlew test)
+./gradlew lintDebug           # Android Lint (baseline applied)
+./gradlew assembleDebug       # arm64-v8a APK
+```
+
+## Priority order
+
+Every change must advance one of these:
+
+1. **Smart home device feel** — Alexa-class response latency, voice-first
+2. **Local agent capabilities** — OpenClaw-style tools / skills / memory on-device
+3. **UX polish** — ambient, onboarding, error recovery
+4. **Hybrid gateway** — escalate heavy tasks to OpenClaw / HermesAgent
+5. **Refactor / quality** — code health, security, performance
+6. **OSS project health** — docs, CI, community
+
+Each PR's description must name which priority it advances.

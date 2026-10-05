@@ -1,0 +1,281 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+}
+
+android {
+    namespace = "com.opendash.app"
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = "com.opendash.app"
+        minSdk = 28
+        targetSdk = 35
+        versionCode = 1
+        versionName = "0.1.0"
+
+        // Custom runner boots HiltTestApplication so @HiltAndroidTest tests can
+        // inject fakes into the real DI graph (see app/src/androidTest/.../HiltTestRunner.kt).
+        testInstrumentationRunner = "com.opendash.app.HiltTestRunner"
+
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
+
+        // P14.1/P16.1: re-enabled so WhisperSttProvider's native backend
+        // (libwhisper_jni.so) actually gets built instead of falling back to
+        // OfflineSttStub. llama_jni also builds as a side effect of sharing
+        // app/src/main/cpp/CMakeLists.txt with whisper.cpp, but is unused —
+        // the LLM path moved to MediaPipe (see the other externalNativeBuild
+        // block below for the CMakeLists.txt path / NDK version pinning).
+        externalNativeBuild {
+            cmake {
+                arguments += listOf(
+                    "-DANDROID_ARM_NEON=TRUE",
+                    "-DCMAKE_BUILD_TYPE=Release",
+                    "-DCMAKE_C_FLAGS=-O3 -march=armv8.2-a+fp16+dotprod -DNDEBUG",
+                    "-DCMAKE_CXX_FLAGS=-O3 -march=armv8.2-a+fp16+dotprod -DNDEBUG"
+                )
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
+        release {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    // Product flavors for embedded VOICEVOX support.
+    //   standard: no VOICEVOX native runtime — HTTP engine provider still usable.
+    //   full:     bundles voicevoxcore AAR + libvoicevox_onnxruntime.so. The
+    //             OpenJTalk dictionary (~102MB) is downloaded on first use,
+    //             not shipped in the APK, to keep the artifact small.
+    flavorDimensions += "voicevox"
+    productFlavors {
+        create("standard") {
+            dimension = "voicevox"
+            buildConfigField("boolean", "VOICEVOX_EMBEDDED", "false")
+        }
+        create("full") {
+            dimension = "voicevox"
+            buildConfigField("boolean", "VOICEVOX_EMBEDDED", "true")
+        }
+    }
+
+    lint {
+        // Baseline captures existing warnings so only new issues fail CI.
+        // Regenerate with `./gradlew updateLintBaseline`.
+        baseline = file("lint-baseline.xml")
+        checkDependencies = false
+        warningsAsErrors = false
+        abortOnError = true
+    }
+
+    // NDK 28.2.13676358 chosen deliberately: it's pre-installed on GitHub
+    // Actions' ubuntu-latest runner image (confirmed against
+    // actions/runner-images' published manifest), so CI needs no extra NDK
+    // provisioning step. Verified locally: both libllama_jni.so and
+    // libwhisper_jni.so compile cleanly and package into standard AND full
+    // flavor debug builds, `./gradlew assembleDebug` and `./gradlew test`
+    // (both flavors) stay green. NOT yet verified on a real device — see
+    // docs/roadmap.md's P21.6 entry.
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
+    ndkVersion = "28.2.13676358"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+        freeCompilerArgs += listOf("-Xskip-metadata-version-check")
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+        unitTests {
+            // Required for JaCoCo to instrument tests.
+            isIncludeAndroidResources = true
+        }
+    }
+}
+
+// JaCoCo coverage report. Run:
+//   ./gradlew testDebugUnitTest jacocoTestReport
+// Output: app/build/reports/jacoco/jacocoTestReport/html/index.html
+// Aim: 80%+ on non-UI code.
+tasks.register<JacocoReport>("jacocoTestReport") {
+    group = "verification"
+    description = "Generates code coverage report for debug unit tests."
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+    }
+
+    val fileFilter = listOf(
+        // UI layer — not worth mocking Compose for coverage, covered via manual QA
+        "**/ui/**",
+        // Generated code (Hilt / Moshi / Room / Compose)
+        "**/R.class", "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*_Factory*.*",
+        "**/*_HiltModules*.*",
+        "**/*_Impl*.*",
+        "**/hilt_aggregated_deps/**",
+        "**/*JsonAdapter*.*",
+        "**/*ComposableSingletons*.*",
+        "**/*LambdaImpl*.*"
+    )
+
+    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+    val mainSrc = "${projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
+        include(
+            "outputs/unit_test_code_coverage/debugUnitTest/*.exec",
+            "jacoco/testDebugUnitTest.exec"
+        )
+    })
+}
+
+dependencies {
+    // Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons)
+    implementation(libs.compose.foundation)
+    debugImplementation(libs.compose.ui.tooling)
+
+    // Android Core
+    implementation(libs.core.ktx)
+    implementation(libs.activity.compose)
+    implementation(libs.security.crypto)
+
+    // Lifecycle
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.lifecycle.viewmodel)
+
+    // Navigation
+    implementation(libs.navigation.compose)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+    // DataStore
+    implementation(libs.datastore.preferences)
+
+    // Network
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.sse)
+    implementation(libs.okhttp.logging)
+    implementation(libs.moshi)
+    ksp(libs.moshi.codegen)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+    implementation(libs.coroutines.guava)
+
+    // MQTT
+    implementation(libs.paho.mqtt)
+
+    // On-device LLM (LiteRT-LM for Gemma 4 + MediaPipe for Gemma 3)
+    implementation(libs.mediapipe.genai)
+    implementation(libs.litertlm.android)
+
+    // On-device text embeddings for semantic memory search (P16.4, user-approved:
+    // MediaPipe EmbeddingGemma over a hand-rolled SentencePiece tokenizer)
+    implementation(libs.mediapipe.text)
+
+    // On-device translation (standalone ML Kit, no Firebase project needed)
+    implementation(libs.mlkit.translate)
+
+    // Bundled Latin OCR model: reads camera captures fully on-device and works offline.
+    implementation(libs.mlkit.text.recognition)
+
+    // Sandboxed JS engine for SKILL.md ```js script blocks (P19.1, user-approved)
+    implementation(libs.zipline)
+
+    // Wake word (Vosk offline speech recognition — flexible custom/Japanese keywords)
+    implementation(libs.vosk)
+
+    // Wake word alternative (openWakeWord ONNX models — lower power for a
+    // handful of English preset keywords; see OpenWakeWordDetector).
+    // Standard Microsoft ORT, unrelated to voicevoxcore's bundled custom
+    // libvoicevox_onnxruntime.so below (different package, different .so name).
+    implementation(libs.onnxruntime.android)
+
+    // VOICEVOX core (embedded, full flavor only).
+    // The AAR ships with Java bindings for jp.hiroshiba.voicevoxcore; pair it with
+    // libvoicevox_onnxruntime.so placed in src/full/jniLibs/arm64-v8a/.
+    // The standard Microsoft ONNX Runtime does NOT support the "vv-bin" model
+    // format used by voicevox_core 0.16.4 — the bundled custom ORT is required.
+    "fullImplementation"(files("libs/voicevoxcore-android-0.16.4.aar"))
+
+    // Logging
+    implementation(libs.timber)
+
+    // Unit Tests
+    testImplementation(libs.junit5)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.truth)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.okhttp.mockwebserver)
+    testImplementation(libs.room.testing)
+
+    // Instrumented Tests (E2E)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.test.ext.junit)
+    androidTestImplementation(libs.test.uiautomator)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+    debugImplementation(libs.compose.ui.test.manifest)
+}

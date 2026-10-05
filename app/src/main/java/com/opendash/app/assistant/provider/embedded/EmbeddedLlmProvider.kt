@@ -1,0 +1,579 @@
+package com.opendash.app.assistant.provider.embedded
+
+import android.content.Context
+import com.google.ai.edge.litertlm.Backend
+import com.google.ai.edge.litertlm.Contents
+import com.google.ai.edge.litertlm.Conversation
+import com.google.ai.edge.litertlm.ConversationConfig
+import com.google.ai.edge.litertlm.Engine
+import com.google.ai.edge.litertlm.EngineConfig
+import com.google.ai.edge.litertlm.Message
+import com.opendash.app.assistant.context.DeviceContextBuilder
+import com.opendash.app.assistant.model.AssistantMessage
+import com.opendash.app.assistant.model.AssistantSession
+import com.opendash.app.assistant.provider.AssistantProvider
+import com.opendash.app.assistant.provider.ProviderCapabilities
+import com.opendash.app.assistant.skills.SkillRegistry
+import com.opendash.app.device.DeviceManager
+import com.opendash.app.tool.ToolSchema
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.io.File
+
+class EmbeddedLlmProvider(
+    private val context: Context,
+    initialConfig: EmbeddedLlmConfig,
+    private val skillRegistry: SkillRegistry? = null,
+    private val deviceManager: DeviceManager? = null
+) : EmbeddedModelSwitcher {
+
+    private val deviceContextBuilder = DeviceContextBuilder()
+    private val toolCallParser = ToolCallParser()
+    private val retryPolicy = ToolCallRetryPolicy(toolCallParser)
+    private val systemPromptBuilder = SystemPromptBuilder()
+    private val toolResultSummarizer = ToolResultSummarizer()
+
+    /**
+     * Mutable so [switchModel] (P16.6) can hot-swap the on-disk model file
+     * without recreating this provider. Everything else (system prompt,
+     * context size, thread/GPU tuning) is carried over unchanged across a
+     * swap — only `modelPath` is replaced. Read this instead of the
+     * constructor parameter everywhere in this class.
+     */
+    private var activeConfig: EmbeddedLlmConfig = initialConfig
+
+    override val id: String = "embedded_llm"
+    override val displayName: String = "On-Device LLM"
+
+    // Computed rather than a fixed `val` — must reflect activeConfig after
+    // a model switch, not just the model this provider was constructed with.
+    override val capabilities: ProviderCapabilities
+        get() = ProviderCapabilities(
+            supportsStreaming = true,
+            // The agent loop parses tool calls from model output (ToolCallParser),
+            // so we declare tool support. Not every model is good at it, but
+            // VoicePipeline's tool loop works regardless.
+            supportsTools = true,
+            maxContextTokens = activeConfig.contextSize,
+            modelName = File(activeConfig.modelPath).nameWithoutExtension,
+            supportsVision = detectVisionSupport(File(activeConfig.modelPath).nameWithoutExtension),
+            isLocal = true
+        )
+
+    private fun detectVisionSupport(modelName: String): Boolean {
+        val lower = modelName.lowercase()
+        // Gemma 3n (E2B/E4B) and Gemma 4 with -mm variants support vision.
+        return "gemma-3n" in lower || "gemma3n" in lower || "-mm" in lower || "vision" in lower
+    }
+
+    private var engine: Engine? = null
+    private var conversation: Conversation? = null
+
+    /**
+     * Serializes every native LiteRT-LM call. Without this, concurrent access
+     * from VoicePipeline (main agent loop) and FastPathLlmPolisher (throwaway
+     * session for weather/news polish) races inside liblitertlm_jni.so and
+     * crashes with SIGSEGV.
+     */
+    private val engineMutex = Mutex()
+
+    override suspend fun startSession(config: Map<String, String>): AssistantSession = engineMutex.withLock {
+        if (engine == null) {
+            withContext(Dispatchers.IO) {
+                initializeEngine()
+            }
+        }
+        if (conversation == null) {
+            createConversation()
+        }
+        AssistantSession(providerId = id)
+    }
+
+    /**
+     * Pre-warm the engine off the main thread so the first user request
+     * doesn't pay the GPU/CPU init cost. Safe to call from app start —
+     * idempotent (subsequent calls no-op once engine is up).
+     *
+     * Returns true on success, false on init failure (caller can fall back
+     * to the legacy lazy path).
+     */
+    suspend fun warmUp(): Boolean = engineMutex.withLock {
+        withContext(Dispatchers.IO) {
+            if (engine != null) return@withContext true
+            try {
+                initializeEngine()
+                if (conversation == null) createConversation()
+                Timber.d("EmbeddedLlmProvider warmed up")
+                true
+            } catch (e: Exception) {
+                Timber.w(e, "EmbeddedLlmProvider warmup failed")
+                false
+            }
+        }
+    }
+
+    private suspend fun initializeEngine() {
+        val modelPath = activeConfig.modelPath
+
+        val initializer = EngineInitializer()
+        val result = initializer.initialize(
+            initGpu = {
+                Engine(
+                    EngineConfig(
+                        modelPath = modelPath,
+                        backend = Backend.GPU(),
+                        cacheDir = context.cacheDir.absolutePath
+                    )
+                ).apply { initialize() }
+            },
+            initCpu = {
+                Engine(
+                    EngineConfig(
+                        modelPath = modelPath,
+                        backend = Backend.CPU(),
+                        cacheDir = context.cacheDir.absolutePath
+                    )
+                ).apply { initialize() }
+            }
+        )
+
+        engine = when (result) {
+            is EngineInitializer.Result.Success -> {
+                Timber.d("LiteRT-LM engine initialized on ${result.backend}")
+                result.engine
+            }
+            is EngineInitializer.Result.Failure -> throw IllegalStateException(
+                "Failed to initialize engine: GPU(${result.gpuError}), CPU(${result.cpuError})"
+            )
+        }
+    }
+
+    private fun createConversation() {
+        conversation?.close()
+        conversation = engine?.createConversation(
+            ConversationConfig(
+                systemInstruction = Contents.of(buildSystemInstruction()),
+                initialMessages = emptyList(),
+                channels = emptyList()
+            )
+        )
+        Timber.d("Conversation created (skills=${skillRegistry?.all()?.size ?: 0})")
+    }
+
+    /**
+     * Build system instruction with optional skill XML injected.
+     * OpenClaw-style: skills are advertised; LLM requests bodies on demand via get_skill.
+     *
+     * Always appends [SystemPromptBuilder.CONVERSATION_CONTEXT_DIRECTIVE]
+     * so the model treats the `User: / Assistant: …` lines that
+     * [buildEnrichedPrompt] prepends as authoritative dialogue history.
+     * Without this, Gemma 4 E2B routinely answered "I don't remember the
+     * previous conversation" even when the prior turns were sitting
+     * verbatim in the prompt.
+     */
+    private fun buildSystemInstruction(): String {
+        val base = activeConfig.systemPrompt
+        val skillsXml = skillRegistry?.toPromptXml().orEmpty()
+        return buildString {
+            append(base)
+            append("\n\n")
+            append(SystemPromptBuilder.CONVERSATION_CONTEXT_DIRECTIVE)
+            if (skillsXml.isNotBlank()) {
+                append("\n\n")
+                append(skillsXml)
+                append("\n\nWhen your task matches a skill's description, call `get_skill` with its name to load the full instructions.")
+            }
+        }
+    }
+
+    override suspend fun endSession(session: AssistantSession) = engineMutex.withLock {
+        conversation?.close()
+        conversation = null
+    }
+
+    override suspend fun send(
+        session: AssistantSession,
+        messages: List<AssistantMessage>,
+        tools: List<ToolSchema>
+    ): AssistantMessage = engineMutex.withLock {
+        withContext(Dispatchers.IO) {
+            val firstAttempt = sendOnce(messages, tools, retry = false)
+            retryPolicy.finalize(
+                firstAttempt = firstAttempt,
+                tools = tools
+            ) {
+                Timber.d("Refusal detected in LLM output; retrying with stricter directive")
+                sendOnce(messages, tools, retry = true)
+            }
+        }
+    }
+
+    /**
+     * Rebuild the native [Conversation] from scratch for every send.
+     *
+     * Reusing a single Conversation across turns corrupts internal state
+     * on at least some (MIUI-hosted) Adreno GPUs: the second send after a
+     * tool-use round was consistently SEGV'ing inside
+     * `liblitertlm_jni.so`. Rebuilding is cheaper than it looks because
+     * the [Engine] is kept warm — only the per-turn KV-cache / sampler
+     * context is recreated. Conversation history is re-sent each turn
+     * via [buildEnrichedPrompt] so rebuild does not lose context.
+     */
+    private suspend fun sendOnce(
+        messages: List<AssistantMessage>,
+        tools: List<ToolSchema>,
+        retry: Boolean
+    ): String {
+        val prompt = buildEnrichedPrompt(messages, tools, retry)
+        val response = StringBuilder()
+        createConversation() // close prior + open fresh
+        conversation?.sendMessageAsync(prompt)?.collect { message ->
+            response.append(message.contents.toString())
+        }
+        return response.toString()
+    }
+
+    override fun sendStreaming(
+        session: AssistantSession,
+        messages: List<AssistantMessage>,
+        tools: List<ToolSchema>
+    ): Flow<AssistantMessage.Delta> = flow {
+        engineMutex.withLock {
+            val prompt = buildEnrichedPrompt(messages, tools, retry = false)
+            val response = StringBuilder()
+
+            // Match [sendOnce]: rebuild the native Conversation each turn to
+            // avoid the second-turn SEGV in liblitertlm_jni.so.
+            createConversation()
+            conversation?.sendMessageAsync(prompt)?.collect { message ->
+                val chunk = message.contents.toString()
+                if (chunk.isNotEmpty()) {
+                    response.append(chunk)
+                    emit(AssistantMessage.Delta(contentDelta = chunk))
+                }
+            }
+
+            emit(AssistantMessage.Delta(finishReason = "stop"))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun isAvailable(): Boolean {
+        return engine != null || File(activeConfig.modelPath).exists()
+    }
+
+    override suspend fun latencyMs(): Long = 0L
+
+    /**
+     * Teardown path. Takes [engineMutex] because closing the native
+     * `Conversation` / `Engine` while another caller is mid-`send()` or
+     * mid-`sendStreaming()` races inside `liblitertlm_jni.so` and
+     * crashes with SIGSEGV at unpredictable offsets. Without this lock
+     * we saw the crash during voice sessions when the app was rotated /
+     * backgrounded mid-response.
+     */
+    suspend fun unload() = engineMutex.withLock {
+        closeEngineLocked()
+    }
+
+    /** Must only be called while holding [engineMutex]. */
+    private fun closeEngineLocked() {
+        conversation?.close()
+        conversation = null
+        engine?.let {
+            if (it.isInitialized()) it.close()
+        }
+        engine = null
+    }
+
+    /**
+     * Swaps the active model to [newModelPath] without restarting the app
+     * (P16.6). `com.google.ai.edge.litertlm.Engine implements AutoCloseable`
+     * and already has a real `close()` (confirmed via `javap` against the
+     * resolved AAR, not assumed) — [unload] already used it, this just
+     * pairs it with a fresh [initializeEngine] under the same
+     * [engineMutex] critical section so no other caller ever observes a
+     * torn-down-but-not-yet-rebuilt engine. `systemPrompt` /
+     * `contextSize` / `threads` / `gpuLayers` carry over unchanged from
+     * the previous config — only `modelPath` changes, so a swap to a
+     * larger/smaller model keeps whatever hardware-tier tuning the
+     * provider was originally constructed with rather than
+     * re-benchmarking. On init failure, reverts to the previous model so
+     * a corrupt or incompatible file doesn't leave the provider dead;
+     * if even the revert fails the provider is left unavailable and
+     * [isAvailable] will correctly report that.
+     */
+    override suspend fun switchModel(newModelPath: String): Boolean = engineMutex.withLock {
+        withContext(Dispatchers.IO) {
+            val previousConfig = activeConfig
+            closeEngineLocked()
+            activeConfig = activeConfig.copy(modelPath = newModelPath)
+            try {
+                initializeEngine()
+                createConversation()
+                Timber.d("Switched embedded model: ${previousConfig.modelPath} -> $newModelPath")
+                true
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to switch model to $newModelPath; reverting to ${previousConfig.modelPath}")
+                activeConfig = previousConfig
+                try {
+                    initializeEngine()
+                    createConversation()
+                } catch (revertError: Exception) {
+                    Timber.e(revertError, "Failed to revert after a failed model switch — provider is unavailable")
+                }
+                false
+            }
+        }
+    }
+
+    private fun extractLastUserMessage(messages: List<AssistantMessage>): String {
+        return (messages.lastOrNull { it is AssistantMessage.User } as? AssistantMessage.User)
+            ?.content ?: "Hello"
+    }
+
+    /**
+     * Builds the per-turn user prompt. Structure:
+     *   1. (optional) tool annex — directive + tool list + few-shot examples
+     *      since LiteRT-LM conversations have a fixed system instruction.
+     *   2. (optional) device state snapshot.
+     *   3. Either the user's last message, OR — when the most recent
+     *      message in history is a [AssistantMessage.ToolCallResult] —
+     *      the summarized tool result + an explicit "answer the user"
+     *      directive. The latter is the second round of the agent loop
+     *      (PR #418); without the directive Gemma 2B degenerates to
+     *      "..." because it has no context telling it to resume.
+     *
+     * When [retry] is true the tool annex is reinforced with a stricter
+     * directive that forbids "I don't have tools" and instructs the model
+     * to pick exactly one tool from the list.
+     *
+     * Internal for tests.
+     */
+    internal fun buildEnrichedPrompt(
+        messages: List<AssistantMessage>,
+        tools: List<ToolSchema>,
+        retry: Boolean
+    ): String {
+        val sb = StringBuilder()
+
+        // Locale-aware language directive injected just before the final
+        // user turn (see end of this function). Declared up front so we
+        // don't recompute per branch.
+        val localeDirective = when (java.util.Locale.getDefault().language) {
+            "ja" -> "[指示] 常に日本語で、短く自然な話し言葉で答えてください。"
+            "ko" -> "[지시] 항상 한국어로, 짧고 자연스러운 회화체로 답해주세요。"
+            "zh" -> "[指令] 请始终用中文，简短自然地口语化回答。"
+            else -> null
+        }
+
+        if (tools.isNotEmpty()) {
+            sb.append(buildToolAnnex(tools, retry))
+            sb.append("\n\n")
+        }
+
+        val devices = deviceManager?.devices?.value?.values
+        if (!devices.isNullOrEmpty()) {
+            val ctx = deviceContextBuilder.build(devices)
+            if (ctx.isNotBlank()) {
+                sb.append(ctx)
+                sb.append("\n\n")
+            }
+        }
+
+        // Prior-turn history. Required now that the native Conversation
+        // is rebuilt on every send (per SIGSEGV workaround in sendOnce /
+        // sendStreaming): the KV-cache is wiped each turn, so anything
+        // the model should "remember" has to be re-sent in-prompt.
+        val priorTurns = messages
+            .dropLastWhile { it is AssistantMessage.ToolCallResult }
+            .let { trimmed ->
+                val lastUserIdx = trimmed.indexOfLast { it is AssistantMessage.User }
+                if (lastUserIdx <= 0) emptyList() else trimmed.subList(0, lastUserIdx)
+            }
+            .filter { it is AssistantMessage.User || it is AssistantMessage.Assistant }
+        if (priorTurns.isNotEmpty()) {
+            priorTurns.forEach { msg ->
+                when (msg) {
+                    is AssistantMessage.User ->
+                        sb.append("User: ").append(msg.content).append('\n')
+                    is AssistantMessage.Assistant ->
+                        if (msg.content.isNotBlank()) {
+                            sb.append("Assistant: ").append(msg.content).append('\n')
+                        }
+                    else -> {}
+                }
+            }
+            sb.append('\n')
+        }
+
+        // If the most recent message is a tool result, we're in the 2nd
+        // (or later) round of the agent loop. Frame the turn as
+        // "here is the tool output — now answer the user" rather than
+        // repeating the original user question, which previously caused
+        // Gemma 2B to emit "..." because it thought the tool call was
+        // still pending.
+        // Language directive right before the current turn — at this
+        // position Gemma treats it as a meta-instruction rather than a
+        // user utterance to reply to. (Earlier placement caused the
+        // model to respond "承知しました" as if someone had asked it to
+        // switch languages.)
+        if (localeDirective != null) {
+            sb.append(localeDirective).append('\n')
+        }
+
+        val followUp = buildToolResultFollowUp(messages)
+        if (followUp != null) {
+            sb.append(followUp)
+        } else {
+            sb.append("User: ")
+            sb.append(extractLastUserMessage(messages))
+        }
+        return sb.toString()
+    }
+
+    /**
+     * Returns a formatted tool-result follow-up block when the most recent
+     * non-delta message in [messages] is a [AssistantMessage.ToolCallResult].
+     * Returns `null` otherwise (first round of the turn).
+     *
+     * The block contains:
+     *   1. The original user question (so the model knows what to answer).
+     *   2. One or more `[Tool Result: <name>] <summary>` blocks — one per
+     *      tool result since the last user turn. Each summary is produced
+     *      by [ToolResultSummarizer] so long JSON payloads do not blow the
+     *      context window.
+     *   3. An explicit directive to answer in natural language using the
+     *      tool result and never output a bare ellipsis.
+     */
+    private fun buildToolResultFollowUp(messages: List<AssistantMessage>): String? {
+        val lastNonDelta = messages.lastOrNull { it !is AssistantMessage.Delta }
+        if (lastNonDelta !is AssistantMessage.ToolCallResult) return null
+
+        // Walk back from the end collecting tool results + the matching
+        // assistant tool calls until we hit the preceding user message.
+        val toolResults = mutableListOf<AssistantMessage.ToolCallResult>()
+        val toolCallsByCallId = mutableMapOf<String, ToolCallRequestSnapshot>()
+        var userQuestion: String? = null
+        for (msg in messages.asReversed()) {
+            when (msg) {
+                is AssistantMessage.ToolCallResult -> toolResults.add(0, msg)
+                is AssistantMessage.Assistant -> {
+                    msg.toolCalls.forEach { call ->
+                        toolCallsByCallId[call.id] =
+                            ToolCallRequestSnapshot(name = call.name)
+                    }
+                }
+                is AssistantMessage.User -> {
+                    userQuestion = msg.content
+                    break
+                }
+                else -> Unit
+            }
+        }
+
+        val sb = StringBuilder()
+        if (!userQuestion.isNullOrBlank()) {
+            sb.append("User asked: ").append(userQuestion).append("\n\n")
+        }
+        for (result in toolResults) {
+            val toolName = toolCallsByCallId[result.callId]?.name ?: "tool"
+            val summary = toolResultSummarizer.summarize(toolName, result.result)
+            sb.append("[Tool Result: ").append(toolName).append("]\n")
+            sb.append(summary).append("\n\n")
+        }
+        sb.append(TOOL_RESULT_ANSWER_DIRECTIVE)
+        return sb.toString()
+    }
+
+    /**
+     * Minimal record for matching a tool call ID to its tool name when
+     * walking conversation history. Avoids importing the Moshi-serialized
+     * `ToolCallRequest` across modules.
+     */
+    private data class ToolCallRequestSnapshot(val name: String)
+
+    /**
+     * Builds a compact tool prompt annex. Re-uses [SystemPromptBuilder]'s
+     * tool section so the few-shot examples and format directives stay in
+     * one place.
+     */
+    private fun buildToolAnnex(tools: List<ToolSchema>, retry: Boolean): String {
+        // SystemPromptBuilder builds a full prompt; we only need the tool
+        // section text, so we feed an empty system prompt and empty history
+        // and then slice out the tool portion. Cheaper to inline the builder
+        // format here, but re-using keeps one source of truth.
+        val full = systemPromptBuilder.build(
+            systemPrompt = "",
+            messages = emptyList(),
+            tools = tools
+        )
+        val toolSection = extractToolSection(full)
+        if (!retry) return toolSection
+        return buildString {
+            append(toolSection)
+            append("\n\n")
+            append(RETRY_DIRECTIVE)
+        }
+    }
+
+    private fun extractToolSection(full: String): String {
+        // SystemPromptBuilder wraps the content in chat-template tokens.
+        // We simply find the "## Available Tools" block.
+        val idx = full.indexOf("## Available Tools")
+        if (idx == -1) return ""
+        val tail = full.substring(idx)
+        // Trim any trailing template markers.
+        val endTokens = listOf("<end_of_turn>", "<|im_end|>", "<|eot_id|>")
+        var cutoff = tail.length
+        for (token in endTokens) {
+            val pos = tail.indexOf(token)
+            if (pos in 0 until cutoff) cutoff = pos
+        }
+        return tail.substring(0, cutoff).trimEnd()
+    }
+
+    companion object {
+        private const val RETRY_DIRECTIVE =
+            "IMPORTANT: Your previous reply refused the request. You MUST NOT " +
+                "say \"I don't have tools\" or \"I can't\". Look at the tool list " +
+                "above and pick EXACTLY ONE tool whose description matches the " +
+                "user's request, then emit a tool call now using one of the " +
+                "supported formats. Do not apologize — just emit the tool call."
+
+        /**
+         * Directive appended after the summarized tool result on the 2nd
+         * round of the agent loop. Explicit enough to keep Gemma 2B from
+         * falling back to its "..." continuation failure mode when it
+         * doesn't know what to do with a tool result in history.
+         *
+         * Honest-not-found clause: real-device logs showed Gemma fabricating
+         * answers ("日経平均は225やNYダウがほぼ4時間で少額で取引があり…")
+         * when the user asked for live data (stock prices, scores, exchange
+         * rates) and DuckDuckGo only returned generic Wikipedia/SERP fluff.
+         * The directive now explicitly authorizes — and instructs — an
+         * honest "the search did not find that" answer when the result
+         * lacks the specific number/value/date the user asked for. This
+         * protects users from confidently-wrong financial chatter while we
+         * wait on a real finance-data provider (External Service Review).
+         */
+        internal const val TOOL_RESULT_ANSWER_DIRECTIVE =
+            "Based on the tool result above, answer the user's question " +
+                "clearly in 1-2 short sentences in their language. " +
+                "Use ONLY facts that appear verbatim in the result; do not " +
+                "infer, extrapolate, or paraphrase unrelated snippets as " +
+                "if they answered the question. " +
+                "If the user asked for a specific value (price, score, " +
+                "exchange rate, date, number) and the result does not " +
+                "contain that value, you MUST say so honestly — for " +
+                "example: \"検索結果には〜の具体的な値が見つかりませんでした\" " +
+                "/ \"The search did not return the current value.\" Do not " +
+                "stitch together unrelated tokens to fake an answer. " +
+                "Do not output ellipsis, repeat the tool call, or apologize."
+    }
+}
