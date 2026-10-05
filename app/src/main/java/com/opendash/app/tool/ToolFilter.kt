@@ -154,11 +154,10 @@ object ToolFilter {
      * major categories so the LLM can still pick something sensible.
      */
     private val FALLBACK_REPRESENTATIVES = listOf(
-        "web_search", "get_weather", "get_news", "get_datetime",
+        "get_weather", "get_datetime",
         "set_timer", "set_volume", "execute_command",
         "get_devices_by_type", "get_rooms",
         "remember", "recall",
-        "get_skill", "list_skills",
         "get_location", "get_calendar_events"
     )
 
@@ -179,21 +178,18 @@ object ToolFilter {
         if (matchingTools.isEmpty()) return fallbackSubset(allTools)
 
         // Always include the agent-control tools so it can introspect / hand off.
-        val alwaysOn = setOf(
-            "get_datetime", "get_skill", "list_skills",
-            "remember", "recall"
-        )
+        val alwaysOn = setOf("get_datetime", "remember", "recall")
         val keep = matchingTools + alwaysOn
         return allTools.filter { it.name in keep }
     }
 
     private fun fallbackSubset(allTools: List<ToolSchema>): List<ToolSchema> {
         if (allTools.size <= MAX_FALLBACK_TOOLS) return allTools
-        // Prefer the representatives in declared order, then backfill with
-        // the first remaining tools until we hit the budget.
+        // Keep unknown requests on a compact general-purpose tool set. Adding
+        // every remaining tool defeats the context budget and encourages small
+        // models to invoke unrelated skills for simple questions.
         val reps = FALLBACK_REPRESENTATIVES.toSet()
         val preferred = allTools.filter { it.name in reps }
-        val rest = allTools.filter { it.name !in reps }
-        return (preferred + rest).take(MAX_FALLBACK_TOOLS)
+        return if (preferred.isNotEmpty()) preferred.take(MAX_FALLBACK_TOOLS) else allTools.take(MAX_FALLBACK_TOOLS)
     }
 }

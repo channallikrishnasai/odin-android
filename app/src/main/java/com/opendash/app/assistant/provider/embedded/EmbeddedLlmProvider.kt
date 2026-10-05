@@ -167,8 +167,9 @@ class EmbeddedLlmProvider(
     }
 
     /**
-     * Build system instruction with optional skill XML injected.
-     * OpenClaw-style: skills are advertised; LLM requests bodies on demand via get_skill.
+     * Build a compact system instruction. Skills are discovered on demand via
+     * list_skills/get_skill; serializing every skill here can exceed the fixed
+     * context window of mobile models before the first user message is sent.
      *
      * Always appends [SystemPromptBuilder.CONVERSATION_CONTEXT_DIRECTIVE]
      * so the model treats the `User: / Assistant: …` lines that
@@ -179,16 +180,10 @@ class EmbeddedLlmProvider(
      */
     private fun buildSystemInstruction(): String {
         val base = activeConfig.systemPrompt
-        val skillsXml = skillRegistry?.toPromptXml().orEmpty()
         return buildString {
             append(base)
             append("\n\n")
             append(SystemPromptBuilder.CONVERSATION_CONTEXT_DIRECTIVE)
-            if (skillsXml.isNotBlank()) {
-                append("\n\n")
-                append(skillsXml)
-                append("\n\nWhen your task matches a skill's description, call `get_skill` with its name to load the full instructions.")
-            }
         }
     }
 

@@ -29,10 +29,10 @@ class ToolFilterTest {
     @Test
     fun `no keyword match returns at most fallback budget`() {
         val filtered = ToolFilter.filterByIntent(all, "xyzzy unrelated utterance")
-        // Fallback path: at most MAX_FALLBACK_TOOLS tools. When the list is
-        // already small (<= MAX_FALLBACK_TOOLS) the full list is returned.
-        assertThat(filtered.size).isAtMost(maxOf(all.size, ToolFilter.MAX_FALLBACK_TOOLS))
-        assertThat(filtered.size).isAtLeast(minOf(all.size, ToolFilter.MAX_FALLBACK_TOOLS))
+        assertThat(filtered.size).isAtMost(ToolFilter.MAX_FALLBACK_TOOLS)
+        assertThat(filtered.map { it.name }).contains("get_weather")
+        assertThat(filtered.map { it.name }).doesNotContain("web_search")
+        assertThat(filtered.map { it.name }).doesNotContain("take_photo")
     }
 
     @Test
@@ -178,13 +178,21 @@ class ToolFilterTest {
     }
 
     @Test
-    fun `fallback keeps representative subset when no bucket matches and list is large`() {
-        // Utterance must not match any bucket — "xyzzy quux" is deliberately
-        // gibberish to exercise the no-match fallback path.
+    fun `fallback keeps representative subset when no keyword matches and list is large`() {
         val bigList = (1..30).map { i -> ToolSchema("tool_$i", "d$i", emptyMap()) } + all
         val filtered = ToolFilter.filterByIntent(bigList, "xyzzy quux gibberish")
-        // Should not exceed MAX_FALLBACK representatives
         assertThat(filtered.size).isAtMost(ToolFilter.MAX_FALLBACK_TOOLS)
+        assertThat(filtered.map { it.name }).doesNotContain("web_search")
+        assertThat(filtered.map { it.name }).doesNotContain("take_photo")
+    }
+
+    @Test
+    fun `simple arithmetic prompt does not offer search or skill tools`() {
+        val filtered = ToolFilter.filterByIntent(
+            allTools = all + ToolSchema("list_skills", "Skills", emptyMap()),
+            userInput = "Calculate 2 + 2. Reply with only the result."
+        )
+        assertThat(filtered).isEmpty()
     }
 
     @Test

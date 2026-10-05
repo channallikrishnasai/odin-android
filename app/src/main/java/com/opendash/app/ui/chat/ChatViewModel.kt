@@ -110,7 +110,10 @@ class ChatViewModel @Inject constructor(
                         sessionProviderId = provider.id
                     }
 
-                val tools = toolExecutor.availableTools()
+                val tools = com.opendash.app.tool.ToolFilter.filterByIntent(
+                    allTools = toolExecutor.availableTools(),
+                    userInput = text
+                )
                 val conversationMessages = _messages.value.toMutableList()
                 var toolRounds = 0
 
